@@ -14,6 +14,7 @@ import { FacilityService } from "../../_services/Facility.service";
 
 const MILES_PER_METER = 0.000621371;
 const FEET_PER_METER = 3.28084;
+const MILES_IN_99_FEET = 0.01875;
 
 @Component({
     selector: "Browse",
@@ -52,11 +53,11 @@ export class BrowseComponent implements OnInit {
 
   getDistanceString(facility: Facility): string {
     let miles = (facility.distance * MILES_PER_METER);
-    if (miles > 0.1) {
+    if (miles > MILES_IN_99_FEET) {
       return `${miles.toFixed(2)} mi`;
     }
     let feet = (facility.distance * FEET_PER_METER);
-    return `${feet.toFixed(2)} ft`;
+    return `${Math.floor(feet)} ft`;
   }
 
   ngOnInit(): void {
