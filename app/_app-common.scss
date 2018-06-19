@@ -26,3 +26,27 @@
 ActionBar .action-bar-title {
     horizontal-align: center;
 }
+
+.list-item {
+  margin: 10;
+  padding-left: 5;
+  border-left-width: 7;
+
+  .list-item-title {
+    font-weight: bold;
+  }
+
+  .list-item-address {
+    color: #bdc3c7;
+  }
+}
+
+.badge-good {
+  border-left-color: green;
+}
+.badge-mediocre {
+  border-left-color: yellow;
+}
+.badge-bad {
+  border-left-color: red;
+}
