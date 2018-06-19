@@ -45,8 +45,8 @@ export class FacilityService {
   }
 
   /**
-   * Queries the API server for all markers.
-   * @returns Observable of Marker results.
+   * Queries the API server for all facilities.
+   * @returns Observable of Facility results.
    */
   getFacilities(): Observable<Facility[]> {
     this.log('fetching facilities');
@@ -56,29 +56,16 @@ export class FacilityService {
   }
 
   /**
-   * Queries the API server for markers near the given location.
+   * Queries the API server for facilities near the given location.
    * @param location  GeoJSON location to search near.
-   * @returns         Observable array of Marker results.
+   * @returns         Observable array of Facility results.
    */
-  // getNearbyMarkers(location: any): Observable<Facility[]> {
-  //   this.log('fetching NEARBY markers');
-  //
-  //   return this.http.post<GeoMarker[]>(`${this.apiUrl}/nearby`, location, httpOptions).pipe(
-  //     tap((markers: GeoMarker[]) => { this.log(`fetched markers`); console.dir(markers); }),
-  //     catchError(this.handleError<GeoMarker[]>('getNearbyMarkers')),
-  //   );
-  // }
+  getNearbyFacilities(location: any): Observable<Facility[]> {
+    this.log(`fetching facilities near: ${location}`);
 
-  /**
-   * Submits a new marker to the API server.
-   * @param marker  The new Marker to be added.
-   * @returns       An observable of a dictionary of the form: { success: boolean, data: the marker that was added }
-   */
-  // addMarker(marker: GeoMarker): Observable<any> {
-  //   return this.http.post<GeoMarker>(this.apiUrl, marker, httpOptions).pipe(
-  //     tap((marker: GeoMarker) => this.log(`added marker`)),
-  //     catchError(this.handleError<GeoMarker>('addMarker')),
-  //   );
-  // }
-
+    return this.http.post<Facility[]>(`${this.apiUrl}/nearby`, location, httpOptions).pipe(
+      tap((facilities: Facility[]) => { this.log(`fetched facilities`); console.dir(facilities); }),
+      catchError(this.handleError<Facility[]>('getNearbyFacilities', [])),
+    );
+  }
 }
