@@ -9,7 +9,9 @@ import {
 } from "nativescript-geolocation";
 
 import { Facility } from "../../_objects/Facility";
+import { Inspection } from "../../_objects/Inspection";
 import { FacilityService } from "../../_services/Facility.service";
+import { InspectionService } from "../../_services/Inspection.service";
 
 
 const MILES_PER_METER = 0.000621371;
@@ -20,7 +22,10 @@ const MILES_IN_99_FEET = 0.01875;
     selector: "Browse",
     moduleId: module.id,
     templateUrl: "./browse.component.html",
-    providers: [ FacilityService ],
+    providers: [
+      FacilityService,
+      InspectionService,
+    ],
 })
 export class BrowseComponent implements OnInit {
 
@@ -35,6 +40,7 @@ export class BrowseComponent implements OnInit {
 
   constructor(
     private facilityService: FacilityService,
+    private inspectionService: InspectionService,
   ) { }
 
   setLocation(callback?: (location: any) => any): void {
@@ -67,5 +73,16 @@ export class BrowseComponent implements OnInit {
           this.itemList = facilities as Array<Facility>;
         });
     });
+  }
+
+  getInspections(facilityId): void {
+    this.inspectionService.getInspections(facilityId)
+      .subscribe(inspections => {
+        console.log(inspections);
+      });
+  }
+
+  onItemTap(item): void {
+    this.getInspections(item._id);
   }
 }

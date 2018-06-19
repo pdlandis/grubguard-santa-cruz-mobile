@@ -10,7 +10,7 @@
 
   <ListView [items]="itemList">
     <ng-template let-item="item">
-      <GridLayout rows="*,*" columns="*,auto" class="list-item badge-good">
+      <GridLayout rows="*,*" columns="*,auto" class="list-item badge-good" (tap)="onItemTap(item)">
         <Label [text]="item.name" row="0" class="list-item-title title-good"></Label>
         <Label [text]="item.address" row="1" col="0" class="list-item-address"></Label>
         <Label [text]="getDistanceString(item)" row="1" col="1"></Label>
