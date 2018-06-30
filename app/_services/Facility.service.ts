@@ -15,10 +15,14 @@ const httpOptions = {
 export class FacilityService {
 
   private apiUrl = `${Settings.API_BASE}/facilities`;
+  private facilityCache: Map<string, Facility>;
 
   constructor(
     private http: HttpClient,
-  ) { }
+  ) {
+    console.log("FacilityService constructor");
+    this.facilityCache = new Map<string, Facility>();
+  }
 
   /**
    * Handle Http operation that failed.
@@ -52,7 +56,28 @@ export class FacilityService {
     this.log('fetching facilities');
 
     return this.http.get<Facility[]>(this.apiUrl)
-      .pipe(catchError(this.handleError('getFacilities', [])));
+      .pipe(
+        catchError(this.handleError('getFacilities', [])),
+        //tap(facility => { this.log("tapped facility: "); console.dir(facility); }),
+      );
+  }
+
+  /**
+   * Queries the API server the facility matching the given id.
+   * @returns Observable of Facility result.
+   */
+  getFacility(id: string): Observable<Facility> {
+    this.log(`fetching facility with id: ${id}`);
+
+    if (this.facilityCache.has(id)) {
+      this.log(`Facility ${id} already in cache`);
+      return of(this.facilityCache.get(id));
+    }
+
+    const url = `${this.apiUrl}/${id}`;
+    //this.log(`generated url: ${url}`);
+    return this.http.get<Facility>(url);
+      //.pipe(catchError(this.handleError('getFacilities', [])));
   }
 
   /**
@@ -61,10 +86,18 @@ export class FacilityService {
    * @returns         Observable array of Facility results.
    */
   getNearbyFacilities(location: any): Observable<Facility[]> {
-    this.log(`fetching facilities near: ${location}`);
+    //this.log(`fetching facilities near: ${location}`);
+    this.log(this.apiUrl);
 
     return this.http.post<Facility[]>(`${this.apiUrl}/nearby`, location, httpOptions).pipe(
-      tap((facilities: Facility[]) => { this.log(`fetched facilities`); console.dir(facilities); }),
+      tap(
+        (facilities: Facility[]) => {
+          //this.log(`processing fetched facilities`);
+          for (let f of facilities) {
+            this.facilityCache.set(f._id, f);
+          }
+          //this.log(`facilities cache size: ${this.facilityCache.size}`);
+        }),
       catchError(this.handleError<Facility[]>('getNearbyFacilities', [])),
     );
   }
