@@ -1,21 +1,14 @@
 
 <StackLayout class="page page-content">
 
-  <StackLayout *ngIf="location">
-    <Label text="Location:"></Label>
-    <Label [text]="location.latitude"></Label>
-    <Label [text]="location.longitude"></Label>
-    <Label>{{ location.latitude }}, {{ location.longitude }}</Label>
-  </StackLayout>
-
   <ListView [items]="itemList">
     <ng-template let-item="item">
-      <GridLayout rows="*,*" columns="*,auto" class="list-item badge-good" (tap)="onItemTap(item)">
+      <GridLayout rows="*,*" columns="*,auto" [class]="getStyleClass(item)" (tap)="onItemTap(item)">
         <Label [text]="item.name" row="0" class="list-item-title title-good"></Label>
         <Label [text]="item.address" row="1" col="0" class="list-item-address"></Label>
         <Label [text]="getDistanceString(item)" row="1" col="1"></Label>
       </GridLayout>
     </ng-template>
-
   </ListView>
+
 </StackLayout>

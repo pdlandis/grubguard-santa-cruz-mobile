@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { RouterExtensions } from "nativescript-angular/router";
+
 import {
   // isEnabled,
   // enableLocationRequest,
@@ -11,8 +13,6 @@ import {
 import { Facility } from "../../_objects/Facility";
 import { Inspection } from "../../_objects/Inspection";
 import { FacilityService } from "../../_services/Facility.service";
-import { InspectionService } from "../../_services/Inspection.service";
-
 
 const MILES_PER_METER = 0.000621371;
 const FEET_PER_METER = 3.28084;
@@ -22,10 +22,6 @@ const MILES_IN_99_FEET = 0.01875;
     selector: "Browse",
     moduleId: module.id,
     templateUrl: "./browse.component.html",
-    providers: [
-      FacilityService,
-      InspectionService,
-    ],
 })
 export class BrowseComponent implements OnInit {
 
@@ -40,7 +36,7 @@ export class BrowseComponent implements OnInit {
 
   constructor(
     private facilityService: FacilityService,
-    private inspectionService: InspectionService,
+    private routerExtensions: RouterExtensions,
   ) { }
 
   setLocation(callback?: (location: any) => any): void {
@@ -66,6 +62,21 @@ export class BrowseComponent implements OnInit {
     return `${Math.floor(feet)} ft`;
   }
 
+  getStyleClass(facility: Facility): string {
+    let baseClasses = 'list-item';
+    switch (facility.grade) {
+      case 'A':
+        return 'list-item grade-good';
+      case 'B':
+        return 'list-item grade-okay';
+      case 'C':
+      case 'D':
+      case 'F':
+      default:
+        return 'list-item grade-bad';
+    }
+  }
+
   ngOnInit(): void {
     this.setLocation((location) => {
       this.facilityService.getNearbyFacilities(location)
@@ -75,14 +86,18 @@ export class BrowseComponent implements OnInit {
     });
   }
 
-  getInspections(facilityId): void {
-    this.inspectionService.getInspections(facilityId)
-      .subscribe(inspections => {
-        console.log(inspections);
-      });
-  }
+
 
   onItemTap(item): void {
-    this.getInspections(item._id);
+    this.routerExtensions.navigate(["/tabs/detail/", item._id],
+        // {
+        //     animated: false,
+        //     transition: {
+        //         name: "slide",
+        //         duration: 200,
+        //         curve: "ease"
+        //     }
+        // }
+      );
   }
 }

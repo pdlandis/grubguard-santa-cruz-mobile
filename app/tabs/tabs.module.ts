@@ -6,6 +6,8 @@ import { HomeComponent } from "./home/home.component";
 import { SearchComponent } from "./search/search.component";
 import { TabsRoutingModule } from "./tabs-routing.module";
 import { TabsComponent } from "./tabs.component";
+import { FacilityDetailComponent } from "./facility-detail/facility-detail.component";
+import { FacilityService } from "../_services/Facility.service";
 
 @NgModule({
     imports: [
@@ -16,10 +18,14 @@ import { TabsComponent } from "./tabs.component";
         TabsComponent,
         HomeComponent,
         BrowseComponent,
-        SearchComponent
+        SearchComponent,
+        FacilityDetailComponent,
     ],
     schemas: [
         NO_ERRORS_SCHEMA
-    ]
+    ],
+    providers: [
+      FacilityService,
+    ],
 })
 export class TabsModule { }

@@ -1,0 +1,25 @@
+<ActionBar class="action-bar">
+    <Label class="action-bar-title" text="detail view"></Label>
+</ActionBar>
+<GridLayout class="page page-content">
+  <ListView *ngIf="!isLoading" [items]="itemList">
+    <ng-template let-item="item">
+      <GridLayout rows="*,*,*,*" columns="auto,auto,auto,auto" class="">
+
+        <!-- <Label text="Inspection date: " row="0" col="0"></Label> -->
+        <Label [text]="item.date" row="0" style="font-weight: bold;" class=""></Label>
+
+        <Label text="Major violations: " row="1" col="0"></Label>
+        <Label [text]="item.violationsMajor" row="1" col="1" class=""></Label>
+
+        <Label text="Minor violations: " row="2" col="0"></Label>
+        <Label [text]="item.violationsMinor" row="2" col="1" class=""></Label>
+
+        <Label text="General violations: " row="3" col="0"></Label>
+        <Label [text]="item.violationsGeneral" row="3" col="1" class=""></Label>
+
+      </GridLayout>
+    </ng-template>
+  </ListView>
+  <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
+</GridLayout>
