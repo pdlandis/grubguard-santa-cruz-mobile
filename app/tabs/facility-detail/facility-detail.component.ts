@@ -71,19 +71,26 @@ export class FacilityDetailComponent implements OnInit {
   parseViolationCode(code: String): string {
     switch(code) {
       case 'EH':
-        return "Employee Hygiene & Training";
+        // "Employee Hygiene & Training"
+        return "Inadequate hygiene or training"
       case 'FP':
-        return "Improper Food Handling Procedures";//"Improper Food Preparation / Handling Procedures";
+        // "Improper Food Preparation / Handling Procedures"
+        return "Improper food handling procedures";
       case 'FS':
-        return "Unapproved or Contaminated Food";//"Unapproved Food Source / Contaminated/Adulterated Food";
+        // "Unapproved Food Source / Contaminated/Adulterated Food"
+        return "Unapproved or contaminated food";
       case 'FT':
-        return "Improper Food Temperatures";//"Improper Food Holding / Processing Temperatures";
+        // "Improper Food Holding / Processing Temperatures"
+        return "Improper food holding temperatures";
       case 'HW':
-        return "Inadequate Hand Washing Procedure";
+        // "Inadequate Hand Washing Procedure"
+        return "Inadequate hand washing procedures";
       case 'VI':
-        return "Vermin (rodent or insect) Infestation";
+        // "Vermin Infestation (rodent or insect)"
+        return "Rodent or insect infestation";
       case 'WS':
-        return "Inadequate Equipment Washing";//"Inadequate Utensil / Equipment Washing or Sanitizing";
+        // "Inadequate Utensil / Equipment Washing or Sanitizing"
+        return "Inadequate cleaning procedures";
       default:
         return "";
     }
