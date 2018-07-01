@@ -1,9 +1,11 @@
 <ActionBar class="action-bar">
-    <Label class="action-bar-title" text="detail view"></Label>
+    <Label class="action-bar-title" text="Location details"></Label>
 </ActionBar>
-<GridLayout class="page page-content">
+<StackLayout class="facility-detail">
+  <Label [text]="facility.name" class="name"></Label>
+  <Label [text]="facility.address" class="address"></Label>
 
-  <ListView *ngIf="!isLoading" [items]="itemList">
+  <ListView *ngIf="!isLoading" [items]="itemList" height="100%">
     <ng-template let-item="item">
 
         <StackLayout style="margin: 10;">
@@ -24,4 +26,4 @@
     </ng-template>
   </ListView>
   <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
-</GridLayout>
+</StackLayout>

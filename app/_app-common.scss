@@ -50,3 +50,17 @@ ActionBar .action-bar-title {
 .grade-bad {
   border-left-color: red;
 }
+
+.facility-detail {
+  Label.name {
+    margin-top: 10;
+    text-align: center;
+    font-size: 18;
+    font-weight: bold;
+  }
+  Label.address {
+    text-align: center;
+    font-size: 14;
+    color: #bdc3c7;
+  }
+}
