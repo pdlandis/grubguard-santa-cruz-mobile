@@ -4,9 +4,17 @@ import { PageRoute } from "nativescript-angular/router";
 import { switchMap } from "rxjs/operators";
 
 import { Facility } from "../../_objects/Facility";
-import { Inspection } from "../../_objects/Inspection";
+import {
+  Inspection,
+  hasMajorViolations,
+  hasMinorViolations,
+  parseInspectionDate,
+} from "../../_objects/Inspection";
 import { FacilityService } from "../../_services/Facility.service";
 import { InspectionService } from "../../_services/Inspection.service";
+
+// import { registerElement } from 'nativescript-angular/element-registry'
+// registerElement('AnimatedCircle', () => require('nativescript-animated-circle').AnimatedCircle);
 
 @Component({
   selector: "FacilityDetail",
@@ -22,6 +30,14 @@ export class FacilityDetailComponent implements OnInit {
   private itemList: Inspection[];
   private isLoading: boolean;
 
+  // private progressScore: number;
+  // private progressColor: String;
+
+  // Expose imported functions to template.
+  private hasMajorViolations = hasMajorViolations;
+  private hasMinorViolations = hasMinorViolations;
+  private parseInspectionDate = parseInspectionDate;
+
   constructor(
     private route: ActivatedRoute,
     private pageRoute: PageRoute,
@@ -29,6 +45,9 @@ export class FacilityDetailComponent implements OnInit {
     private inspectionService: InspectionService,
   ) {
     this.isLoading = true;
+
+    // this.progressScore = 0;
+    // this.progressColor = '#000000';
   }
 
   ngOnInit(): void {
@@ -44,6 +63,20 @@ export class FacilityDetailComponent implements OnInit {
       .subscribe(facility => {
         this.facility = facility;
         this.getInspections();
+
+        // // TODO: make this a gradient that changes as the bar fills up
+        // this.progressColor = this.getGradeColor();
+        //
+        // // Start circle filling animation
+        // let looper = setInterval(() => {
+        //     if (this.progressScore >= this.facility.score) {
+        //         clearInterval(looper);
+        //     }
+        //     let increment = this.facility.score / 100;
+        //     this.progressScore += increment;
+        // }, 10);
+
+
       });
   }
 
@@ -51,21 +84,8 @@ export class FacilityDetailComponent implements OnInit {
     this.inspectionService.getInspections(this.facility._id)
       .subscribe(inspections => {
         this.itemList = inspections;
-        // console.log(inspections);
         this.isLoading = false;
       });
-  }
-
-  parseInspectionDate(inspection: Inspection): string {
-    return (new Date(inspection.date)).toLocaleDateString();
-  }
-
-  hasMajorViolations(item: Inspection): boolean {
-    return (item.violationsMajor !== '0');
-  }
-
-  hasMinorViolations(item: Inspection): boolean {
-    return (item.violationsMinor !== '0');
   }
 
   parseViolationCode(code: String): string {
@@ -117,5 +137,40 @@ export class FacilityDetailComponent implements OnInit {
   }
 
 
+  getGradeColor(): string {
+    if (!this.facility)
+      return 'white';
+
+    switch (this.facility.grade) {
+      case 'A':
+        return 'green';
+      case 'B':
+        return '#F1C40F';//'yellow';
+      case 'C':
+      case 'D':
+      case 'F':
+      default:
+        return '#C0392B';//'red';
+    }
+  }
+  getGradeMessage(): string {
+    if (!this.facility)
+      return '';
+
+    switch (this.facility.grade) {
+      case 'A':
+        return 'Excellent';
+      case 'B':
+        return 'Good';
+      case 'C':
+        return 'Okay';
+      case 'D':
+        return 'Avoid';
+      case 'F':
+        return 'How is this place still open?';
+      default:
+        return '';
+    }
+  }
 
 }

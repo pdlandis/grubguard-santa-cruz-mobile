@@ -1,4 +1,24 @@
-<GridLayout class="page page-content">
-    <Label class="page-icon fa" text="&#xf002;"></Label>
-    <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
-</GridLayout>
+<StackLayout>
+  <SearchBar hint="Search for a restaurant" (submit)="onSubmit($event)"></SearchBar>
+  <!-- <ListView [items]="itemList">
+    <ng-template let-item="item">
+      <GridLayout rows="*,*" columns="*,auto" [class]="getStyleClass(item)" (tap)="onItemTap(item)">
+        <Label [text]="item.name" row="0" class="list-item-title title-good"></Label>
+        <Label [text]="item.address" row="1" col="0" class="list-item-address"></Label>
+        <Label [text]="getDistanceString(item)" row="1" col="1"></Label>
+      </GridLayout>
+    </ng-template>
+  </ListView> -->
+
+</StackLayout>
+
+<!-- <GridLayout class="page page-content"> -->
+    <!-- <Label class="page-icon fa" text="&#xf002;"></Label> -->
+    <!-- <Label class="page-placeholder" text="Page content goes here"></Label> -->
+    <!-- <Label text="NYI: search component"></Label> -->
+
+    <!-- <SearchBar hint="Search for a restaurant" (submit)="onSubmit($event)"></SearchBar> -->
+
+                <!-- color="white" textFieldBackgroundColor="w" textFieldHintColor="white"></SearchBar> -->
+<!-- [text]="searchPhrase" (textChange)="onTextChanged($event)" (submit)="onSubmit($event)" -->
+<!-- </GridLayout> -->

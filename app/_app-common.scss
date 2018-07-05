@@ -63,4 +63,23 @@ ActionBar .action-bar-title {
     font-size: 14;
     color: #bdc3c7;
   }
+  Label.grade-message {
+    text-align: center;
+    font-size: 14;
+  }
+  Label.inspections-sign {
+    // width: 30%;
+    text-align: center;
+    font-size: 16;
+    border-top-width: 1;
+    border-left-width: 1;
+    border-right-width: 1;
+    // border-color: #bdc3c7;
+    // color: #bdc3c7;
+  }
+  Label.linebreak {
+    border-top-width: 1;
+    // border-top-color: #bdc3c7;
+    // #EAECEE;
+  }
 }

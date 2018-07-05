@@ -5,6 +5,32 @@
   <Label [text]="facility.name" class="name"></Label>
   <Label [text]="facility.address" class="address"></Label>
 
+  <!-- <AnimatedCircle *ngIf="!isLoading"
+        backgroundColor="transparent"
+        width="150"
+        height="150"
+        animated="true"
+        animateFrom="0"
+        rimColor="#EAECEE"
+        [barColor]="progressColor"
+        fillColor="#FFFFFF"
+        clockwise="true"
+        rimWidth="6"
+        [progress]="progressScore"
+        [text]="facility.grade"
+        textSize="40"
+        [textColor]="getGradeColor()"
+        margin="20"
+        >
+  </AnimatedCircle> -->
+
+  <!-- <Label [text]="getGradeMessage()" class="grade-message"></Label> -->
+
+  <!-- <Label text="Score calculated using these inspections:" class="inspections-sign"></Label> -->
+  <Label class="linebreak"></Label>
+
+
+
   <ListView *ngIf="!isLoading" [items]="itemList" height="100%">
     <ng-template let-item="item">
 
