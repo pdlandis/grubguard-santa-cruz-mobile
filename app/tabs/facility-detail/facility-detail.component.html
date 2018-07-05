@@ -1,7 +1,7 @@
 <ActionBar class="action-bar">
     <Label class="action-bar-title" text="Location details"></Label>
 </ActionBar>
-<StackLayout class="facility-detail">
+<StackLayout *ngIf="!isLoading; else stillLoading" class="facility-detail">
   <Label [text]="facility.name" class="name"></Label>
   <Label [text]="facility.address" class="address"></Label>
 
@@ -51,5 +51,7 @@
 
     </ng-template>
   </ListView>
-  <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
 </StackLayout>
+<ng-template #stillLoading>
+  <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
+</ng-template>
