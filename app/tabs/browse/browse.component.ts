@@ -10,7 +10,7 @@ import {
   // clearWatch
 } from "nativescript-geolocation";
 
-import { Facility } from "../../_objects/Facility";
+import { Facility, getStyleClass } from "../../_objects/Facility";
 import { Inspection } from "../../_objects/Inspection";
 import { FacilityService } from "../../_services/Facility.service";
 
@@ -33,6 +33,9 @@ export class BrowseComponent implements OnInit {
     maximumAge: 20000,
     timeout: 20000,
   }
+
+  // Expose imported functions to template
+  private getStyleClass = getStyleClass;
 
   constructor(
     private facilityService: FacilityService,
@@ -62,21 +65,6 @@ export class BrowseComponent implements OnInit {
     return `${Math.floor(feet)} ft`;
   }
 
-  getStyleClass(facility: Facility): string {
-    let baseClasses = 'list-item';
-    switch (facility.grade) {
-      case 'A':
-        return 'list-item grade-good';
-      case 'B':
-        return 'list-item grade-okay';
-      case 'C':
-      case 'D':
-      case 'F':
-      default:
-        return 'list-item grade-bad';
-    }
-  }
-
   ngOnInit(): void {
     this.setLocation((location) => {
       this.facilityService.getNearbyFacilities(location)
@@ -85,8 +73,6 @@ export class BrowseComponent implements OnInit {
         });
     });
   }
-
-
 
   onItemTap(item): void {
     this.routerExtensions.navigate(["/tabs/detail/", item._id],

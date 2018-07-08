@@ -10,20 +10,25 @@ export class Facility {
 
   location: Geolocation;
   distance: number;
+}
 
-
-  public testFacilityMethod(): void {
-    console.log("test facility method was called.");
-  }
-
-  // constructor(options) {
-  //   this._id = options._id;
-  //   this.name = options.name;
-  //   this.address = options.address;
-  //
-  //      this.x = obj && obj.x || 0
-  //      this.y = obj && obj.y || 0
-  //      this.height = obj && obj.height || 0
-  //      this.width = obj && obj.width || 0;
-  //  }
+ /*
+  * These functions should be class methods.
+  * However, there is an unresolved issue where objects returned from
+  * the API server are not being cast to Facility objects, causing them
+  * to lose class definitions. This is a workaround for that problem.
+  */
+export function getStyleClass(facility: Facility): string {
+ let baseClasses = 'list-item';
+ switch (facility.grade) {
+   case 'A':
+     return 'list-item grade-good';
+   case 'B':
+     return 'list-item grade-okay';
+   case 'C':
+   case 'D':
+   case 'F':
+   default:
+     return 'list-item grade-bad';
  }
+}
