@@ -80,6 +80,23 @@ export class FacilityService {
       //.pipe(catchError(this.handleError('getFacilities', [])));
   }
 
+
+/**
+ * Queries the API server for a facility list by name match.
+ * @returns Observable of Facility result.
+ */
+  getFacilitiesByName(name: string): Observable<Facility[]> {
+    this.log(`fetching facility with name: ${name}`);
+
+    let data = {
+      name: name,
+    };
+
+    return this.http.post<Facility[]>(`${this.apiUrl}/search`, data, httpOptions).pipe(
+      catchError(this.handleError<Facility[]>('getFacilitiesByName', [])),
+    );
+  }
+
   /**
    * Queries the API server for facilities near the given location.
    * @param location  GeoJSON location to search near.
