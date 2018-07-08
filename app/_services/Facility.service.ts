@@ -15,6 +15,8 @@ const httpOptions = {
 export class FacilityService {
 
   private apiUrl = `${Settings.API_BASE}/facilities`;
+
+  // Cache is implemented as a simple id -> object map.
   private facilityCache: Map<string, Facility>;
 
   constructor(
@@ -36,6 +38,27 @@ export class FacilityService {
       console.error(error);
       this.log(`${operation} failed: ${error.message}`);
       return of(result as T); // Let app keep running by returning empty observable
+    }
+  }
+
+  private cacheAdd(facilities: Facility[]): void {
+    for (let f of facilities) {
+      this.facilityCache.set(f._id, f);
+    }
+  }
+
+  private cacheAddSingle(f: Facility): void {
+    this.facilityCache.set(f._id, f);
+  }
+
+
+  private cacheHas(id: string): boolean {
+    return this.facilityCache.has(id);
+  }
+
+  private cacheGet(id: string): Observable<Facility> {
+    if (this.cacheHas(id)) {
+      return of(this.facilityCache.get(id));
     }
   }
 
@@ -69,14 +92,14 @@ export class FacilityService {
   getFacility(id: string): Observable<Facility> {
     this.log(`fetching facility with id: ${id}`);
 
-    if (this.facilityCache.has(id)) {
-      this.log(`Facility ${id} already in cache`);
-      return of(this.facilityCache.get(id));
+    if (this.cacheHas(id)) {
+      return this.cacheGet(id);
     }
 
     const url = `${this.apiUrl}/${id}`;
-    //this.log(`generated url: ${url}`);
-    return this.http.get<Facility>(url);
+    return this.http.get<Facility>(url).pipe(
+      tap((facility: Facility) => { this.cacheAddSingle(facility); }),
+    );
       //.pipe(catchError(this.handleError('getFacilities', [])));
   }
 
@@ -88,11 +111,10 @@ export class FacilityService {
   getFacilitiesByName(name: string): Observable<Facility[]> {
     this.log(`fetching facility with name: ${name}`);
 
-    let data = {
-      name: name,
-    };
+    let data = { name: name, };
 
     return this.http.post<Facility[]>(`${this.apiUrl}/search`, data, httpOptions).pipe(
+      tap((facilities: Facility[]) => { this.cacheAdd(facilities); }),
       catchError(this.handleError<Facility[]>('getFacilitiesByName', [])),
     );
   }
@@ -107,14 +129,7 @@ export class FacilityService {
     this.log(this.apiUrl);
 
     return this.http.post<Facility[]>(`${this.apiUrl}/nearby`, location, httpOptions).pipe(
-      tap(
-        (facilities: Facility[]) => {
-          //this.log(`processing fetched facilities`);
-          for (let f of facilities) {
-            this.facilityCache.set(f._id, f);
-          }
-          //this.log(`facilities cache size: ${this.facilityCache.size}`);
-        }),
+      tap((facilities: Facility[]) => { this.cacheAdd(facilities); }),
       catchError(this.handleError<Facility[]>('getNearbyFacilities', [])),
     );
   }
