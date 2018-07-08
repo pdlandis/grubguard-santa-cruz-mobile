@@ -1,5 +1,8 @@
 import { Component, OnInit } from "@angular/core";
+import { RouterExtensions } from "nativescript-angular/router";
 import { SearchBar } from "ui/search-bar";
+import { Facility, getStyleClass } from "../../_objects/Facility";
+import { FacilityService } from "../../_services/Facility.service";
 
 @Component({
     selector: "Search",
@@ -7,16 +10,44 @@ import { SearchBar } from "ui/search-bar";
     templateUrl: "./search.component.html"
 })
 export class SearchComponent implements OnInit {
-    constructor() {
-        // Use the constructor to inject services.
-    }
 
-    ngOnInit(): void {
-        // Use the "ngOnInit" handler to initialize data for the view.
-    }
+  private itemList: Array<Facility>;
 
-    public onSubmit(args) {
-        let searchBar = <SearchBar>args.object;
-        alert("You are searching for " + searchBar.text);
-    }
+  // Expose imported functions to template
+  private getStyleClass = getStyleClass;
+
+  constructor(
+    private facilityService: FacilityService,
+    private routerExtensions: RouterExtensions,
+  ) { }
+
+  ngOnInit(): void {
+  }
+
+  public onSubmit(args) {
+    let searchBar = <SearchBar>args.object;
+    this.sendSearch(searchBar.text);
+  }
+
+  sendSearch(query): void {
+    this.facilityService.getFacilitiesByName(query)
+      .subscribe(results => {
+        this.itemList = results;
+      });
+  }
+
+  onItemTap(item): void {
+    console.log(item);
+    this.routerExtensions.navigate(["/tabs/detail/", item._id],
+        // {
+        //     animated: false,
+        //     transition: {
+        //         name: "slide",
+        //         duration: 200,
+        //         curve: "ease"
+        //     }
+        // }
+      );
+  }
+
 }
