@@ -3,18 +3,18 @@ import { CanActivate, Resolve, ActivatedRoute, RouterStateSnapshot } from "@angu
 import { PageRoute } from "nativescript-angular/router";
 import { switchMap } from "rxjs/operators";
 
-import { Facility } from "../../_objects/Facility";
+import { Facility } from "../../_objects/facility";
 import {
   Inspection,
   hasMajorViolations,
   hasMinorViolations,
   parseInspectionDate,
-} from "../../_objects/Inspection";
-import { FacilityService } from "../../_services/Facility.service";
-import { InspectionService } from "../../_services/Inspection.service";
+} from "../../_objects/inspection";
+import { FacilityService } from "../../_services/facility.service";
+import { InspectionService } from "../../_services/inspection.service";
 
-// import { registerElement } from 'nativescript-angular/element-registry'
-// registerElement('AnimatedCircle', () => require('nativescript-animated-circle').AnimatedCircle);
+import { registerElement } from 'nativescript-angular/element-registry'
+registerElement('AnimatedCircle', () => require('nativescript-animated-circle').AnimatedCircle);
 
 @Component({
   selector: "FacilityDetail",
@@ -30,8 +30,8 @@ export class FacilityDetailComponent implements OnInit {
   private itemList: Inspection[];
   private isLoading: boolean;
 
-  // private progressScore: number;
-  // private progressColor: String;
+  private progressScore: number;
+  private progressColor: String;
 
   // Expose imported functions to template.
   private hasMajorViolations = hasMajorViolations;
@@ -46,8 +46,8 @@ export class FacilityDetailComponent implements OnInit {
   ) {
     this.isLoading = true;
 
-    // this.progressScore = 0;
-    // this.progressColor = '#000000';
+    this.progressScore = 0;
+    this.progressColor = '#000000';
   }
 
   ngOnInit(): void {
@@ -64,17 +64,17 @@ export class FacilityDetailComponent implements OnInit {
         this.facility = facility;
         this.getInspections();
 
-        // // TODO: make this a gradient that changes as the bar fills up
-        // this.progressColor = this.getGradeColor();
-        //
-        // // Start circle filling animation
-        // let looper = setInterval(() => {
-        //     if (this.progressScore >= this.facility.score) {
-        //         clearInterval(looper);
-        //     }
-        //     let increment = this.facility.score / 100;
-        //     this.progressScore += increment;
-        // }, 10);
+        // TODO: make this a gradient that changes as the bar fills up
+        this.progressColor = this.getGradeColor();
+
+        // Start circle filling animation
+        let looper = setInterval(() => {
+            if (this.progressScore >= this.facility.score) {
+                clearInterval(looper);
+            }
+            let increment = this.facility.score / 100;
+            this.progressScore += increment;
+        }, 10);
 
 
       });

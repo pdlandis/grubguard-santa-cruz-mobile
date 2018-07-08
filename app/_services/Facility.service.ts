@@ -4,7 +4,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Facility } from '../_objects/Facility';
+import { Facility } from '../_objects/facility';
 import { Settings } from '../_config/settings';
 
 const httpOptions = {
@@ -22,7 +22,6 @@ export class FacilityService {
   constructor(
     private http: HttpClient,
   ) {
-    console.log("FacilityService constructor");
     this.facilityCache = new Map<string, Facility>();
   }
 

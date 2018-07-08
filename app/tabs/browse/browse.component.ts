@@ -10,9 +10,9 @@ import {
   // clearWatch
 } from "nativescript-geolocation";
 
-import { Facility, getStyleClass } from "../../_objects/Facility";
-import { Inspection } from "../../_objects/Inspection";
-import { FacilityService } from "../../_services/Facility.service";
+import { Facility, getStyleClass } from "../../_objects/facility";
+import { Inspection } from "../../_objects/inspection";
+import { FacilityService } from "../../_services/facility.service";
 
 const MILES_PER_METER = 0.000621371;
 const FEET_PER_METER = 3.28084;

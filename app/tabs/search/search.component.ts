@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
 import { SearchBar } from "ui/search-bar";
-import { Facility, getStyleClass } from "../../_objects/Facility";
-import { FacilityService } from "../../_services/Facility.service";
+import { Facility, getStyleClass } from "../../_objects/facility";
+import { FacilityService } from "../../_services/facility.service";
 
 @Component({
     selector: "Search",

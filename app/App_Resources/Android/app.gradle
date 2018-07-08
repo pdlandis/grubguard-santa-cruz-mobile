@@ -1,16 +1,18 @@
 // Add your native dependencies here:
 
 // Uncomment to add recyclerview-v7 dependency
-//dependencies {
+dependencies {
 //	compile 'com.android.support:recyclerview-v7:+'
-//}
+//  compile 'com.github.jakob-grabner:Circle-Progress-View:v1.3'
+}
 
-android {  
-  defaultConfig {  
+
+android {
+  defaultConfig {
     generatedDensities = []
-    applicationId = "org.nativescript.gutcheck"  
-  }  
-  aaptOptions {  
-    additionalParameters "--no-version-vectors"  
-  }  
-} 
+    applicationId = "org.nativescript.gutcheck"
+  }
+  aaptOptions {
+    additionalParameters "--no-version-vectors"
+  }
+}

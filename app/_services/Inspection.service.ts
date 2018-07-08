@@ -4,7 +4,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Inspection } from '../_objects/Inspection';
+import { Inspection } from '../_objects/inspection';
 import { Settings } from '../_config/settings';
 
 const httpOptions = {

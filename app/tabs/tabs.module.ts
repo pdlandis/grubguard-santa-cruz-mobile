@@ -7,7 +7,7 @@ import { SearchComponent } from "./search/search.component";
 import { TabsRoutingModule } from "./tabs-routing.module";
 import { TabsComponent } from "./tabs.component";
 import { FacilityDetailComponent } from "./facility-detail/facility-detail.component";
-import { FacilityService } from "../_services/Facility.service";
+import { FacilityService } from "../_services/facility.service";
 
 @NgModule({
     imports: [

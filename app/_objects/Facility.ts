@@ -1,4 +1,4 @@
-import { Geolocation } from "./Geolocation";
+import { Geolocation } from "./geolocation";
 
 export class Facility {
   _id: string;
