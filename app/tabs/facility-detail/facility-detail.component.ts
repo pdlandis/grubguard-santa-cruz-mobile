@@ -1,7 +1,8 @@
+import { switchMap } from "rxjs/operators";
 import { Component, OnInit, Input } from "@angular/core";
 import { CanActivate, Resolve, ActivatedRoute, RouterStateSnapshot } from "@angular/router";
 import { PageRoute } from "nativescript-angular/router";
-import { switchMap } from "rxjs/operators";
+import { isAndroid } from "platform";
 
 import { Facility } from "../../_objects/facility";
 import {
@@ -153,6 +154,7 @@ export class FacilityDetailComponent implements OnInit {
         return '#C0392B';//'red';
     }
   }
+
   getGradeMessage(): string {
     if (!this.facility)
       return '';
@@ -171,6 +173,10 @@ export class FacilityDetailComponent implements OnInit {
       default:
         return '';
     }
+  }
+
+  getTextSize(): string {
+    return isAndroid ? "16" : "20";
   }
 
 }
