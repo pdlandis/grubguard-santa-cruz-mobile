@@ -176,7 +176,7 @@ export class FacilityDetailComponent implements OnInit {
   }
 
   getTextSize(): string {
-    return isAndroid ? "16" : "20";
+    return isAndroid ? "16" : "60";
   }
 
 }
