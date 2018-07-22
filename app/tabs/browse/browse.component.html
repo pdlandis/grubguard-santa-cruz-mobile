@@ -1,6 +1,7 @@
 
 <StackLayout class="page page-content">
 
+<PullToRefresh (refresh)="onPullToRefreshInitiated($event)">
   <ListView [items]="itemList">
     <ng-template let-item="item">
       <GridLayout rows="*,*" columns="*,auto" [class]="getStyleClass(item)" (tap)="onItemTap(item)">
@@ -10,5 +11,6 @@
       </GridLayout>
     </ng-template>
   </ListView>
+</PullToRefresh>
 
 </StackLayout>

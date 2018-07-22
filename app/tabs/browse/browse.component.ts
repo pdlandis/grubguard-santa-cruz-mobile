@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { registerElement } from "nativescript-angular/element-registry";
 import { RouterExtensions } from "nativescript-angular/router";
-
 import {
   // isEnabled,
   // enableLocationRequest,
@@ -17,6 +17,8 @@ import { FacilityService } from "../../_services/facility.service";
 const MILES_PER_METER = 0.000621371;
 const FEET_PER_METER = 3.28084;
 const MILES_IN_99_FEET = 0.01875;
+
+registerElement("PullToRefresh", () => require("nativescript-pulltorefresh").PullToRefresh);
 
 @Component({
     selector: "Browse",
@@ -65,13 +67,20 @@ export class BrowseComponent implements OnInit {
     return `${Math.floor(feet)} ft`;
   }
 
-  ngOnInit(): void {
-    this.setLocation((location) => {
-      this.facilityService.getNearbyFacilities(location)
-        .subscribe(facilities => {
-          this.itemList = facilities as Array<Facility>;
-        });
+  refresh(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.setLocation((location) => {
+        this.facilityService.getNearbyFacilities(location)
+          .subscribe(facilities => {
+            this.itemList = facilities as Array<Facility>;
+            resolve();
+          });
+      });
     });
+  }
+
+  ngOnInit(): void {
+    this.refresh();
   }
 
   onItemTap(item): void {
@@ -85,5 +94,12 @@ export class BrowseComponent implements OnInit {
         //     }
         // }
       );
+  }
+
+  public onPullToRefreshInitiated(args) {
+    var pullRefresh = args.object;
+    this.refresh().then(() => {
+      pullRefresh.refreshing = false;
+    });
   }
 }
