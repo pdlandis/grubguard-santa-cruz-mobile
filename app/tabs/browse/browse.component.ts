@@ -20,6 +20,15 @@ const MILES_IN_99_FEET = 0.01875;
 
 registerElement("PullToRefresh", () => require("nativescript-pulltorefresh").PullToRefresh);
 
+class ListItem {
+  public isHeader: boolean;
+  public facility: Facility;
+  constructor(isHeader: boolean, facility?: Facility) {
+    this.isHeader = isHeader;
+    this.facility = facility;
+  }
+}
+
 @Component({
     selector: "Browse",
     moduleId: module.id,
@@ -27,7 +36,9 @@ registerElement("PullToRefresh", () => require("nativescript-pulltorefresh").Pul
 })
 export class BrowseComponent implements OnInit {
 
-  private itemList: Array<Facility>;
+
+
+  private itemList: Array<ListItem>;
   private location: any;
   private locationOptions = {
     desiredAccuracy: 3,
@@ -72,7 +83,14 @@ export class BrowseComponent implements OnInit {
       this.setLocation((location) => {
         this.facilityService.getNearbyFacilities(location)
           .subscribe(facilities => {
-            this.itemList = facilities as Array<Facility>;
+
+            // this.itemList = facilities as Array<Facility>;
+            this.itemList = [];
+            this.itemList.push(new ListItem(true));
+            for (let f of facilities) {
+              this.itemList.push(new ListItem(false, f));
+            }
+            console.log(this.itemList);
             resolve();
           });
       });
@@ -102,4 +120,14 @@ export class BrowseComponent implements OnInit {
       pullRefresh.refreshing = false;
     });
   }
+
+  public templateSelector = (item: any, index: number, items: any) => {
+    return item.isHeader ? "header" : "item";
+  }
+
+
+  public getIcon(): string {
+    return String.fromCharCode(0xf063);
+  }
+
 }

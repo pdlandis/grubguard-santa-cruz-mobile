@@ -2,14 +2,27 @@
 <StackLayout class="page page-content">
 
 <PullToRefresh (refresh)="onPullToRefreshInitiated($event)">
-  <ListView [items]="itemList">
-    <ng-template let-item="item">
-      <GridLayout rows="*,*" columns="*,auto" [class]="getStyleClass(item)" (tap)="onItemTap(item)">
-        <Label [text]="item.name" row="0" class="list-item-title title-good"></Label>
-        <Label [text]="item.address" row="1" col="0" class="list-item-address"></Label>
-        <Label [text]="getDistanceString(item)" row="1" col="1"></Label>
+  <ListView [items]="itemList" [itemTemplateSelector]="templateSelector">
+
+    <ng-template nsTemplateKey="item" let-item="item">
+      <GridLayout rows="*,*" columns="*,auto" [class]="getStyleClass(item.facility)" (tap)="onItemTap(item.facility)">
+        <Label [text]="item.facility.name" row="0" class="list-item-title title-good"></Label>
+        <Label [text]="item.facility.address" row="1" col="0" class="list-item-address"></Label>
+        <Label [text]="getDistanceString(item.facility)" row="1" col="1"></Label>
       </GridLayout>
     </ng-template>
+
+    <ng-template nsTemplateKey="header" let-item="item">
+      <GridLayout columns="*, auto, *" rows="auto">
+        <Label col="0" row="0"></Label>
+        <StackLayout orientation="horizontal" col="1" row="0">
+          <Label text="pull to refresh" class="refresh-label"></Label>
+          <Label [text]="getIcon()" class="fa refresh-label"></Label>
+        </StackLayout>
+        <Label col="2" row="0"></Label>
+      </GridLayout>
+    </ng-template>
+
   </ListView>
 </PullToRefresh>
 
