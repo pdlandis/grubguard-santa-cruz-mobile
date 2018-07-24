@@ -9,15 +9,15 @@ Learn more about the TabView component in this documentation article:
 http://docs.nativescript.org/angular/code-samples/ui/tab-view
 -->
 <TabView (selectedIndexChanged)="onSelectedIndexChanged($event)">
-    <!-- <StackLayout *tabItem="{title: 'Home', iconSource: getIconSource('home')}">
-        <Home></Home>
-    </StackLayout> -->
+  <StackLayout *tabItem="{title: 'Nearby', iconSource: getIconSource('near_me')}">
+    <Browse></Browse>
+  </StackLayout>
 
-    <StackLayout *tabItem="{title: 'Nearby', iconSource: getIconSource('near_me')}">
-        <Browse></Browse>
-    </StackLayout>
+  <StackLayout *tabItem="{title: 'Search', iconSource: getIconSource('search')}">
+    <Search></Search>
+  </StackLayout>
 
-    <StackLayout *tabItem="{title: 'Search', iconSource: getIconSource('search')}">
-        <Search></Search>
-    </StackLayout>
+  <StackLayout *tabItem="{title: 'About', iconSource: getIconSource('home')}">
+    <Home></Home>
+  </StackLayout>
 </TabView>
