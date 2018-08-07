@@ -39,6 +39,17 @@ export class FacilityDetailComponent implements OnInit {
   private hasMinorViolations = hasMinorViolations;
   private parseInspectionDate = parseInspectionDate;
 
+
+  private iconCodes = {
+    ft: String.fromCharCode(0xf2cb),
+    fp: String.fromCharCode(0xf256),
+    fs: String.fromCharCode(0xf49e),
+    vi: String.fromCharCode(0xf188),
+    ws: String.fromCharCode(0xf2e7),
+    eh: String.fromCharCode(0xf007),
+    hw: String.fromCharCode(0xf461),
+  };
+
   constructor(
     private route: ActivatedRoute,
     private pageRoute: PageRoute,

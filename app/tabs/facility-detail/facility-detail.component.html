@@ -26,6 +26,21 @@
 
   <!-- <Label [text]="getGradeMessage()" class="grade-message"></Label> -->
 
+  <GridLayout columns="*, auto, *" rows="auto">
+    <Label col="0" row="0"></Label> <!-- spacer -->
+    <StackLayout orientation="horizontal" col="1" row="0">
+      <Label text="{{ iconCodes.ft }}" class="fa" fontSize="60" color="red"></Label>
+      <Label text="{{ iconCodes.fp }}" class="fa" fontSize="60" color="red"></Label>
+      <Label text="{{ iconCodes.fs }}" class="fa" fontSize="60" color="red"></Label>
+      <Label text="{{ iconCodes.vi }}" class="fa" fontSize="60" color="red"></Label>
+      <Label text="{{ iconCodes.ws }}" class="fa" fontSize="60" color="red"></Label>
+      <Label text="{{ iconCodes.eh }}" class="fa" fontSize="60" color="red"></Label>
+      <Label text="{{ iconCodes.hw }}" class="fa" fontSize="60" color="red"></Label>
+    </StackLayout>
+    <Label col="2" row="0"></Label> <!-- spacer -->
+  </GridLayout>
+
+
   <!-- <Label text="Score calculated using these inspections:" class="inspections-sign"></Label> -->
   <Label class="linebreak"></Label>
 
