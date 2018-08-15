@@ -34,21 +34,14 @@ export class FacilityDetailComponent implements OnInit {
   private progressScore: number;
   private progressColor: String;
 
+  private violationTypeMessage = " ";
+  private violations = [];
+
   // Expose imported functions to template.
   private hasMajorViolations = hasMajorViolations;
   private hasMinorViolations = hasMinorViolations;
   private parseInspectionDate = parseInspectionDate;
 
-
-  private iconCodes = {
-    ft: String.fromCharCode(0xf2cb),
-    fp: String.fromCharCode(0xf256),
-    fs: String.fromCharCode(0xf49e),
-    vi: String.fromCharCode(0xf188),
-    ws: String.fromCharCode(0xf2e7),
-    eh: String.fromCharCode(0xf007),
-    hw: String.fromCharCode(0xf461),
-  };
 
   constructor(
     private route: ActivatedRoute,
@@ -97,6 +90,84 @@ export class FacilityDetailComponent implements OnInit {
       .subscribe(inspections => {
         this.itemList = inspections;
         this.isLoading = false;
+
+        if(this.itemList.length > 0) {
+          for (let v of this.itemList[0].violationsMajor.split(' ')) {
+            switch(v) {
+              case '0': break;
+              case 'EH':
+                // "Employee Hygiene & Training"
+                this.violations.push({ code: "eh", description: "Employee Hygiene & Training", icon: String.fromCharCode(0xf007), selected: false, major: true });
+                break;
+              case 'FP':
+                // "Improper Food Preparation / Handling Procedures"
+                this.violations.push({ code: "fp", description: "Improper Food Preparation/Handling Procedures", icon: String.fromCharCode(0xf256), selected: false, major: true });
+                break;
+              case 'FS':
+                // "Unapproved Food Source / Contaminated/Adulterated Food"
+                this.violations.push({ code: "fs", description: "Unapproved Food Source, Contaminated/Adulterated Food", icon: String.fromCharCode(0xf49e), selected: false, major: true });
+                break;
+              case 'FT':
+                // "Improper Food Holding / Processing Temperatures"
+                this.violations.push({ code: "ft", description: "Improper Food Holding/Processing Temperatures", icon: String.fromCharCode(0xf2cb), selected: false, major: true });
+                break;
+              case 'HW':
+                // "Inadequate Hand Washing Procedure"
+                this.violations.push({ code: "hw", description: "Inadequate Hand Washing Procedure", icon: String.fromCharCode(0xf461), selected: false, major: true });
+                break;
+              case 'VI':
+                // "Vermin Infestation (rodent or insect)"
+                this.violations.push({ code: "vi", description: "Vermin Infestation (rodent or insect)", icon: String.fromCharCode(0xf188), selected: false, major: true });
+                break;
+              case 'WS':
+                // "Inadequate Utensil / Equipment Washing or Sanitizing"
+                this.violations.push({ code: "ws", description: "Inadequate Utensil/Equipment Washing or Sanitizing", icon: String.fromCharCode(0xf2e7), selected: false, major: true });
+                break;
+              default:
+                break;
+            }
+          }
+        }
+
+        if(this.itemList.length > 0) {
+          for (let v of this.itemList[0].violationsMinor.split(' ')) {
+            switch(v) {
+              case '0': break;
+              case 'EH':
+                // "Employee Hygiene & Training"
+                this.violations.push({ code: "eh", description: "Employee Hygiene & Training", icon: String.fromCharCode(0xf007), selected: false, minor: true });
+                break;
+              case 'FP':
+                // "Improper Food Preparation / Handling Procedures"
+                this.violations.push({ code: "fp", description: "Improper Food Preparation/Handling Procedures", icon: String.fromCharCode(0xf256), selected: false, minor: true });
+                break;
+              case 'FS':
+                // "Unapproved Food Source / Contaminated/Adulterated Food"
+                this.violations.push({ code: "fs", description: "Unapproved Food Source, Contaminated/Adulterated Food", icon: String.fromCharCode(0xf49e), selected: false, minor: true });
+                break;
+              case 'FT':
+                // "Improper Food Holding / Processing Temperatures"
+                this.violations.push({ code: "ft", description: "Improper Food Holding/Processing Temperatures", icon: String.fromCharCode(0xf2cb), selected: false, minor: true });
+                break;
+              case 'HW':
+                // "Inadequate Hand Washing Procedure"
+                this.violations.push({ code: "hw", description: "Inadequate Hand Washing Procedure", icon: String.fromCharCode(0xf461), selected: false, minor: true });
+                break;
+              case 'VI':
+                // "Vermin Infestation (rodent or insect)"
+                this.violations.push({ code: "vi", description: "Vermin Infestation (rodent or insect)", icon: String.fromCharCode(0xf188), selected: false, minor: true });
+                break;
+              case 'WS':
+                // "Inadequate Utensil / Equipment Washing or Sanitizing"
+                this.violations.push({ code: "ws", description: "Inadequate Utensil/Equipment Washing or Sanitizing", icon: String.fromCharCode(0xf2e7), selected: false, minor: true });
+                break;
+              default:
+                break;
+            }
+          }
+        }
+
+
       });
   }
 
@@ -188,6 +259,15 @@ export class FacilityDetailComponent implements OnInit {
 
   getTextSize(): string {
     return isAndroid ? "16" : "60";
+  }
+
+  private onIconTap(v): void {
+    for (let violation of this.violations) {
+      violation.selected = false;
+    }
+    v.selected = true;
+    this.violationTypeMessage = v.description;
+
   }
 
 }

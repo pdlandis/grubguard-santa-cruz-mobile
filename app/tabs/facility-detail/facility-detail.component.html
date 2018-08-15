@@ -26,16 +26,19 @@
 
   <!-- <Label [text]="getGradeMessage()" class="grade-message"></Label> -->
 
+  <Label [text]="violationTypeMessage"></Label>
   <GridLayout columns="*, auto, *" rows="auto">
     <Label col="0" row="0"></Label> <!-- spacer -->
     <StackLayout orientation="horizontal" col="1" row="0">
-      <Label text="{{ iconCodes.ft }}" class="fa" fontSize="60" color="red"></Label>
-      <Label text="{{ iconCodes.fp }}" class="fa" fontSize="60" color="red"></Label>
-      <Label text="{{ iconCodes.fs }}" class="fa" fontSize="60" color="red"></Label>
-      <Label text="{{ iconCodes.vi }}" class="fa" fontSize="60" color="red"></Label>
-      <Label text="{{ iconCodes.ws }}" class="fa" fontSize="60" color="red"></Label>
-      <Label text="{{ iconCodes.eh }}" class="fa" fontSize="60" color="red"></Label>
-      <Label text="{{ iconCodes.hw }}" class="fa" fontSize="60" color="red"></Label>
+      <Label *ngFor="let v of violations"
+        [text]="v.icon"
+        class="fa detail-icon"
+        (tap)="onIconTap(v)"
+        [class.selected]="v.selected"
+        [class.detail-icon-major]="v.major"
+        [class.detail-icon-minor]="v.minor"
+        >
+      </Label>
     </StackLayout>
     <Label col="2" row="0"></Label> <!-- spacer -->
   </GridLayout>
