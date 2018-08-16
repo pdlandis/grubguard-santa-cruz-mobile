@@ -1,8 +1,9 @@
 import { switchMap } from "rxjs/operators";
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ViewContainerRef } from "@angular/core";
 import { CanActivate, Resolve, ActivatedRoute, RouterStateSnapshot } from "@angular/router";
 import { PageRoute } from "nativescript-angular/router";
 import { isAndroid } from "platform";
+import { registerElement } from 'nativescript-angular/element-registry'
 
 import { Facility } from "../../_objects/facility";
 import {
@@ -13,8 +14,11 @@ import {
 } from "../../_objects/inspection";
 import { FacilityService } from "../../_services/facility.service";
 import { InspectionService } from "../../_services/inspection.service";
+import * as dialogs from "ui/dialogs";
 
-import { registerElement } from 'nativescript-angular/element-registry'
+import { ModalComponent } from "./modal/info.modal";
+import { ModalDialogService } from "nativescript-angular/directives/dialogs";
+
 registerElement('AnimatedCircle', () => require('nativescript-animated-circle').AnimatedCircle);
 
 @Component({
@@ -23,6 +27,7 @@ registerElement('AnimatedCircle', () => require('nativescript-animated-circle').
   templateUrl: "./facility-detail.component.html",
   providers: [
     InspectionService,
+    ModalDialogService,
   ],
 })
 export class FacilityDetailComponent implements OnInit {
@@ -34,16 +39,23 @@ export class FacilityDetailComponent implements OnInit {
   private progressScore: number;
   private progressColor: String;
 
+  private violationSelected = false;
+  private violationTypeMessage = "";
+  private violations = [];
+
   // Expose imported functions to template.
   private hasMajorViolations = hasMajorViolations;
   private hasMinorViolations = hasMinorViolations;
   private parseInspectionDate = parseInspectionDate;
+
 
   constructor(
     private route: ActivatedRoute,
     private pageRoute: PageRoute,
     private facilityService: FacilityService,
     private inspectionService: InspectionService,
+    private modalDialogService: ModalDialogService,
+    private viewContainerRef: ViewContainerRef,
   ) {
     this.isLoading = true;
 
@@ -57,6 +69,9 @@ export class FacilityDetailComponent implements OnInit {
     ).forEach((params) => {
       this.getFacility(params["id"]);
     });
+
+
+
   }
 
   getFacility(facilityId): void {
@@ -81,11 +96,118 @@ export class FacilityDetailComponent implements OnInit {
       });
   }
 
+  // Does nothing. Used to disable tapping highlight on non-interactive list elements.
+  public doNothing(): void {
+    return;
+  }
+
   getInspections(): void {
     this.inspectionService.getInspections(this.facility._id)
       .subscribe(inspections => {
         this.itemList = inspections;
         this.isLoading = false;
+
+        if(this.itemList.length > 0) {
+          for (let v of this.itemList[0].violationsMajor.split(' ')) {
+            switch(v) {
+              case '0': break;
+              case 'EH':
+                // "Employee Hygiene & Training"
+                this.violations.push({
+                  code: "eh",
+                  description: "Employee Hygiene & Training",
+                  icon: String.fromCharCode(0xf007),
+                  examples: [
+                    "Employee(s) working around food with open cuts or sores, or while ill with a communicable disease that can cause a food borne illness; or while suffering from symptoms associated with acute gastrointestinal illness.",
+                    "Failure to restrict the duties of or exclude any employee from a food facility when notified that the employee has a communicable illness that is transmissible through food.",
+                    "Lack of adequate food safety knowledge, as related to the food employee's assigned duties. Failure of a permit-holder to obtain or maintain a valid food safety training certificate for the facility within 60 days of notification.",
+                   ],
+                  selected: false, major: true });
+                break;
+              case 'FP':
+                // "Improper Food Preparation / Handling Procedures"
+                this.violations.push({ code: "fp", description: "Improper Food Preparation/Handling Procedures", icon: String.fromCharCode(0xf256), selected: false, major: true });
+                break;
+              case 'FS':
+                // "Unapproved Food Source / Contaminated/Adulterated Food"
+                this.violations.push({ code: "fs", description: "Unapproved Food Source, Contaminated/Adulterated Food", icon: String.fromCharCode(0xf49e), selected: false, major: true });
+                break;
+              case 'FT':
+                // "Improper Food Holding / Processing Temperatures"
+                this.violations.push({ code: "ft", description: "Improper Food Holding/Processing Temperatures", icon: String.fromCharCode(0xf2cb), selected: false, major: true });
+                break;
+              case 'HW':
+                // "Inadequate Hand Washing Procedure"
+                this.violations.push({ code: "hw", description: "Inadequate Hand Washing Procedure", icon: String.fromCharCode(0xf461), selected: false, major: true });
+                break;
+              case 'VI':
+                // "Vermin Infestation (rodent or insect)"
+                this.violations.push({
+                  code: "vi",
+                  description: "Vermin Infestation (rodent or insect)",
+                  icon: String.fromCharCode(0xf188),
+                  examples: [ "Active signs of a heavy rodent or insect infestation or food contaminated by rodents or insects.", ],
+                  selected: false,
+                  major: true,
+                });
+                break;
+              case 'WS':
+                // "Inadequate Utensil / Equipment Washing or Sanitizing"
+                this.violations.push({ code: "ws", description: "Inadequate Utensil/Equipment Washing or Sanitizing", icon: String.fromCharCode(0xf2e7), selected: false, major: true });
+                break;
+              default:
+                break;
+            }
+          }
+        }
+
+        if(this.itemList.length > 0) {
+          for (let v of this.itemList[0].violationsMinor.split(' ')) {
+            switch(v) {
+              case '0': break;
+              case 'EH':
+                // "Employee Hygiene & Training"
+                this.violations.push({ code: "eh", description: "Employee Hygiene & Training", icon: String.fromCharCode(0xf007),
+                examples: [
+                  "Employee(s) working around food with open cuts or sores, or while ill with a communicable disease that can cause a food borne illness; or while suffering from symptoms associated with acute gastrointestinal illness.",
+                  "Failure to restrict the duties of or exclude any employee from a food facility when notified that the employee has a communicable illness that is transmissible through food.",
+                  "Lack of adequate food safety knowledge, as related to the food employee's assigned duties. Failure of a permit-holder to obtain or maintain a valid food safety training certificate for the facility within 60 days of notification.",
+                 ],
+                selected: false, minor: true });
+                break;
+              case 'FP':
+                // "Improper Food Preparation / Handling Procedures"
+                this.violations.push({ code: "fp", description: "Improper Food Preparation/Handling Procedures", icon: String.fromCharCode(0xf256), selected: false, minor: true });
+                break;
+              case 'FS':
+                // "Unapproved Food Source / Contaminated/Adulterated Food"
+                this.violations.push({ code: "fs", description: "Unapproved Food Source, Contaminated/Adulterated Food", icon: String.fromCharCode(0xf49e), selected: false, minor: true });
+                break;
+              case 'FT':
+                // "Improper Food Holding / Processing Temperatures"
+                this.violations.push({ code: "ft", description: "Improper Food Holding/Processing Temperatures", icon: String.fromCharCode(0xf2cb), selected: false, minor: true });
+                break;
+              case 'HW':
+                // "Inadequate Hand Washing Procedure"
+                this.violations.push({ code: "hw", description: "Inadequate Hand Washing Procedure", icon: String.fromCharCode(0xf461), selected: false, minor: true });
+                break;
+              case 'VI':
+                // "Vermin Infestation (rodent or insect)"
+                this.violations.push({ code: "vi", description: "Vermin Infestation (rodent or insect)", icon: String.fromCharCode(0xf188),
+                examples: [ "Active signs of a heavy rodent or insect infestation or food contaminated by rodents or insects.", ],
+                selected: false, minor: true });
+                break;
+              case 'WS':
+                // "Inadequate Utensil / Equipment Washing or Sanitizing"
+                this.violations.push({ code: "ws", description: "Inadequate Utensil/Equipment Washing or Sanitizing", icon: String.fromCharCode(0xf2e7), selected: false, minor: true });
+                break;
+              default:
+                break;
+            }
+          }
+        }
+
+
       });
   }
 
@@ -177,6 +299,25 @@ export class FacilityDetailComponent implements OnInit {
 
   getTextSize(): string {
     return isAndroid ? "16" : "60";
+  }
+
+  private onIconTap(v): void {
+    for (let violation of this.violations) {
+      violation.selected = false;
+    }
+    v.selected = true;
+    this.violationSelected = true;
+    this.violationTypeMessage = v.description;
+  }
+
+  private showIconDetails(): void {
+    let v = this.violations.find(x => x.selected);
+    let options = {
+      context: { violation: v },
+      fullscreen: false,
+      viewContainerRef: this.viewContainerRef,
+    }
+    this.modalDialogService.showModal(ModalComponent, options);
   }
 
 }

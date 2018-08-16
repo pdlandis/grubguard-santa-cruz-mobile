@@ -1,9 +1,6 @@
 // Place any CSS rules you want to apply on both iOS and Android here.
 // This is where the vast majority of your CSS code goes.
-// Font icon class
-.fa {
-   font-family: "FontAwesome";
-}
+
 // Common page class
 .page-content {
     .page-placeholder {
@@ -79,6 +76,7 @@ ActionBar .action-bar-title {
   }
   Label.linebreak {
     border-top-width: 1;
+    margin-top: 20;
     // border-top-color: #bdc3c7;
     // #EAECEE;
   }
@@ -96,4 +94,44 @@ Label.refresh-label {
 
 .action-bar {
   background-color: #7F8C8D;
+}
+
+.detail-icon {
+  text-align: center;
+  font-size: 42;
+  padding: 5;
+  margin-top: 5;
+}
+.selected {
+  padding: 3;
+  border-width: 2;
+  border-radius: 5;
+}
+.detail-icon-major {
+  color: #C0392B;
+}
+.detail-icon-minor {
+  color: #F1C40F;
+}
+
+
+.dialog-info {
+  width: 90%;
+  text-align: center;
+}
+.dialog-button {
+  margin-top: 10;
+  width: 50%;
+  border-width: 1;
+  border-radius: 2;
+  padding: 10;
+  font-size: 20;
+
+  color: white;
+  background-color: cornflowerblue;
+}
+
+.centered-text {
+  width: 90%;
+  text-align: center;
 }

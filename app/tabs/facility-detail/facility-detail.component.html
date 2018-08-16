@@ -26,15 +26,36 @@
 
   <!-- <Label [text]="getGradeMessage()" class="grade-message"></Label> -->
 
-  <!-- <Label text="Score calculated using these inspections:" class="inspections-sign"></Label> -->
-  <Label class="linebreak"></Label>
+  <ng-template [ngIf]="violationSelected">
+    <Label [text]="violationTypeMessage" class="centered-text" textWrap="true"></Label>
+    <Label text="more information" (tap)="showIconDetails()" color="cornflowerblue" class="centered-text" textWrap="true"></Label>
+  </ng-template>
 
+  <GridLayout columns="*, auto, *" rows="auto">
+    <Label col="0" row="0"></Label> <!-- spacer -->
+    <StackLayout orientation="horizontal" col="1" row="0">
+      <Label *ngFor="let v of violations"
+        [text]="v.icon"
+        class="fa detail-icon"
+        (tap)="onIconTap(v)"
+        [class.selected]="v.selected"
+        [class.detail-icon-major]="v.major"
+        [class.detail-icon-minor]="v.minor"
+        >
+      </Label>
+    </StackLayout>
+    <Label col="2" row="0"></Label> <!-- spacer -->
+  </GridLayout>
+
+
+  <!-- <Label text="Score calculated using these inspections:" class="inspections-sign"></Label> -->
+  <StackLayout class="hr-light m-10"></StackLayout>
 
 
   <ListView *ngIf="!isLoading" [items]="itemList" height="100%">
     <ng-template let-item="item">
 
-        <StackLayout style="margin: 10;">
+        <StackLayout style="margin: 10;" (tap)="doNothing()">
           <Label [text]="parseInspectionDate(item)" style="font-weight: bold;"></Label>
 
           <Label *ngIf="!hasMajorViolations(item)" text="No major violations this inspection." style="color: green;"></Label>

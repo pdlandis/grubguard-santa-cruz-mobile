@@ -1,0 +1,27 @@
+<ScrollView>
+<StackLayout>
+  <GridLayout columns="*, auto, *" rows="auto, auto" textAlign="center">
+    <Label col="0" row="0"></Label> <!-- spacer -->
+    <Label col="1" row="0" [text]="violation.icon" class="fa detail-icon"></Label>
+    <Label col="2" row="0"></Label> <!-- spacer -->
+  </GridLayout>
+
+  <Label [text]="violation.description" class="dialog-info" marginTop="10" fontWeight="bold" textWrap="true"></Label>
+
+  <StackLayout class="hr-light m-10"></StackLayout>
+
+  <Label text="Examples of this category include:" class="dialog-info" marginTop="5" textWrap="true"></Label>
+
+  <StackLayout *ngFor="let e of violation.examples">
+    <Label width="90%" textWrap="true" textAlign="center" marginTop="10">
+            <Span text="· " fontSize=20 fontWeight="bold"></Span>
+            <Span [text]="e"></Span>
+    </Label>
+  </StackLayout>
+
+  <Label  text="Note: these descriptions are only examples. Information about individual violations is not available through this app."
+          class="dialog-info font-italic" marginTop="10" textWrap="true"></Label>
+
+  <Button text="Close" (tap)="close()" class="dialog-button" marginBottom="10"></Button>
+</StackLayout>
+</ScrollView>
