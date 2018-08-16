@@ -9,6 +9,10 @@ import { TabsComponent } from "./tabs.component";
 import { FacilityDetailComponent } from "./facility-detail/facility-detail.component";
 import { FacilityService } from "../_services/facility.service";
 
+// import { ModalDialogService } from "nativescript-angular/modal-dialog";
+import { ModalComponent } from "./facility-detail/modal/info.modal";
+
+
 @NgModule({
     imports: [
         NativeScriptCommonModule,
@@ -20,12 +24,15 @@ import { FacilityService } from "../_services/facility.service";
         BrowseComponent,
         SearchComponent,
         FacilityDetailComponent,
+        ModalComponent,
     ],
+    entryComponents: [ ModalComponent, ],
     schemas: [
         NO_ERRORS_SCHEMA
     ],
     providers: [
       FacilityService,
+      // ModalDialogService,
     ],
 })
 export class TabsModule { }

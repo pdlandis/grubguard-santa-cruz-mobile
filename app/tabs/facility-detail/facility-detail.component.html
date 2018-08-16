@@ -45,14 +45,13 @@
 
 
   <!-- <Label text="Score calculated using these inspections:" class="inspections-sign"></Label> -->
-  <Label class="linebreak"></Label>
-
+  <StackLayout class="hr-light m-10"></StackLayout>
 
 
   <ListView *ngIf="!isLoading" [items]="itemList" height="100%">
     <ng-template let-item="item">
 
-        <StackLayout style="margin: 10;">
+        <StackLayout style="margin: 10;" (tap)="doNothing()">
           <Label [text]="parseInspectionDate(item)" style="font-weight: bold;"></Label>
 
           <Label *ngIf="!hasMajorViolations(item)" text="No major violations this inspection." style="color: green;"></Label>
