@@ -1,5 +1,10 @@
 
-<StackLayout class="page page-content">
+<StackLayout *ngIf="!hasPermission">
+  <Label text="Couldn't access your current location." class="centered-text text-muted" marginTop="100" fontWeight="bold" textWrap="true"></Label>
+  <Label text="Please check the app permissions, or switch to the Search feature." class="centered-text text-muted" marginTop="10" fontWeight="bold" textWrap="true"></Label>
+</StackLayout>
+
+<StackLayout *ngIf="!isLoading; else stillLoading" class="page page-content">
 
 <PullToRefresh (refresh)="onPullToRefreshInitiated($event)">
   <ListView [items]="itemList" [itemTemplateSelector]="templateSelector">
@@ -27,3 +32,7 @@
 </PullToRefresh>
 
 </StackLayout>
+
+<ng-template #stillLoading>
+  <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
+</ng-template>

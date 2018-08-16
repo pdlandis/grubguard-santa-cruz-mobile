@@ -36,7 +36,8 @@ class ListItem {
 })
 export class BrowseComponent implements OnInit {
 
-
+  private isLoading: boolean;
+  private hasPermission: boolean;
 
   private itemList: Array<ListItem>;
   private location: any;
@@ -53,11 +54,15 @@ export class BrowseComponent implements OnInit {
   constructor(
     private facilityService: FacilityService,
     private routerExtensions: RouterExtensions,
-  ) { }
+  ) {
+    this.isLoading = true;
+    this.hasPermission = true;
+  }
 
   setLocation(callback?: (location: any) => any): void {
     getCurrentLocation(this.locationOptions)
       .then((loc) => {
+        this.hasPermission = true;
         if (loc) {
           this.location = loc;
           if (callback) {
@@ -65,7 +70,9 @@ export class BrowseComponent implements OnInit {
           }
         }
     }, (err) => {
-        console.log("Error: " + err.message);
+      this.hasPermission = false;
+      this.isLoading = false;
+      // console.log("Error: " + err.message);
     });
   }
 
@@ -83,14 +90,12 @@ export class BrowseComponent implements OnInit {
       this.setLocation((location) => {
         this.facilityService.getNearbyFacilities(location)
           .subscribe(facilities => {
-
-            // this.itemList = facilities as Array<Facility>;
             this.itemList = [];
             this.itemList.push(new ListItem(true));
             for (let f of facilities) {
               this.itemList.push(new ListItem(false, f));
             }
-            console.log(this.itemList);
+            this.isLoading = false;
             resolve();
           });
       });
