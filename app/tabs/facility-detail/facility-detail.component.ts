@@ -39,7 +39,8 @@ export class FacilityDetailComponent implements OnInit {
   private progressScore: number;
   private progressColor: String;
 
-  private violationTypeMessage = " ";
+  private violationSelected = false;
+  private violationTypeMessage = "";
   private violations = [];
 
   // Expose imported functions to template.
@@ -305,8 +306,12 @@ export class FacilityDetailComponent implements OnInit {
       violation.selected = false;
     }
     v.selected = true;
+    this.violationSelected = true;
     this.violationTypeMessage = v.description;
+  }
 
+  private showIconDetails(): void {
+    let v = this.violations.find(x => x.selected);
     let options = {
       context: { violation: v },
       fullscreen: false,

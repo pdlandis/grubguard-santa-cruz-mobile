@@ -26,7 +26,11 @@
 
   <!-- <Label [text]="getGradeMessage()" class="grade-message"></Label> -->
 
-  <Label [text]="violationTypeMessage"></Label>
+  <ng-template [ngIf]="violationSelected">
+    <Label [text]="violationTypeMessage" class="centered-text" textWrap="true"></Label>
+    <Label text="more information" (tap)="showIconDetails()" color="cornflowerblue" class="centered-text" textWrap="true"></Label>
+  </ng-template>
+
   <GridLayout columns="*, auto, *" rows="auto">
     <Label col="0" row="0"></Label> <!-- spacer -->
     <StackLayout orientation="horizontal" col="1" row="0">
