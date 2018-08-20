@@ -1,6 +1,7 @@
 <ActionBar class="action-bar">
     <Label class="action-bar-title" text="Location details"></Label>
 </ActionBar>
+<ScrollView>
 <StackLayout *ngIf="!isLoading; else stillLoading" class="facility-detail">
   <Label [text]="facility.name" class="name"></Label>
   <Label [text]="facility.address" class="address"></Label>
@@ -51,28 +52,24 @@
   <!-- <Label text="Score calculated using these inspections:" class="inspections-sign"></Label> -->
   <StackLayout class="hr-light m-10"></StackLayout>
 
+  <StackLayout *ngFor="let item of itemList" style="margin: 10;" (tap)="doNothing()">
+    <Label [text]="parseInspectionDate(item)" style="font-weight: bold;"></Label>
 
-  <ListView *ngIf="!isLoading" [items]="itemList" height="100%">
-    <ng-template let-item="item">
+    <Label *ngIf="!hasMajorViolations(item)" text="No major violations this inspection." style="color: green;"></Label>
+    <Label *ngFor="let v of parseMajorViolations(item)" [text]="v" style="color: #C0392B;"></Label>
 
-        <StackLayout style="margin: 10;" (tap)="doNothing()">
-          <Label [text]="parseInspectionDate(item)" style="font-weight: bold;"></Label>
+    <Label *ngIf="!hasMinorViolations(item)" text="No minor violations this inspection." style="color: green;"></Label>
+    <Label *ngFor="let v of parseMinorViolations(item)" [text]="v" style="color: #F1C40F;"></Label>
 
-          <Label *ngIf="!hasMajorViolations(item)" text="No major violations this inspection." style="color: green;"></Label>
-          <Label *ngFor="let v of parseMajorViolations(item)" [text]="v" style="color: #C0392B;"></Label>
+    <GridLayout rows="*", columns="auto,auto">
+      <Label text="Other violations: " row="0" col="0" style="color: #7F8C8D;"></Label>
+      <Label [text]="item.violationsGeneral" row="0" col="1" style="color: #7F8C8D;"></Label>
+    </GridLayout>
+  </StackLayout>
 
-          <Label *ngIf="!hasMinorViolations(item)" text="No minor violations this inspection." style="color: green;"></Label>
-          <Label *ngFor="let v of parseMinorViolations(item)" [text]="v" style="color: #F1C40F;"></Label>
-
-          <GridLayout rows="*", columns="auto,auto">
-            <Label text="Other violations: " row="0" col="0" style="color: #7F8C8D;"></Label>
-            <Label [text]="item.violationsGeneral" row="0" col="1" style="color: #7F8C8D;"></Label>
-          </GridLayout>
-        </StackLayout>
-
-    </ng-template>
-  </ListView>
 </StackLayout>
+</ScrollView>
+
 <ng-template #stillLoading>
   <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
 </ng-template>
