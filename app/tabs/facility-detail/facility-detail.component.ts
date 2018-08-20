@@ -101,6 +101,97 @@ export class FacilityDetailComponent implements OnInit {
     return;
   }
 
+  private getViolationFromCode(code: string, isMinor: boolean): any {
+    switch(code) {
+      case '0':
+        return null;
+      case 'EH':
+        // "Employee Hygiene & Training"
+        return {
+          code: "eh",
+          description: "Employee Hygiene & Training",
+          icon: String.fromCharCode(0xf007),
+          examples: [
+            "Employee(s) working around food with open cuts or sores, or while ill with a communicable disease that can cause a food borne illness; or while suffering from symptoms associated with acute gastrointestinal illness.",
+            "Failure to restrict the duties of or exclude any employee from a food facility when notified that the employee has a communicable illness that is transmissible through food.",
+            "Lack of adequate food safety knowledge, as related to the food employee's assigned duties. Failure of a permit-holder to obtain or maintain a valid food safety training certificate for the facility within 60 days of notification.",
+           ],
+          selected: false, minor: isMinor };
+      case 'FP':
+        // "Improper Food Preparation / Handling Procedures"
+        return {
+          code: "fp",
+          description: "Improper Food Preparation/Handling Procedures",
+          examples: [
+            "Direct cross contamination of ready to eat foods with raw foods or unclean equipment or utensils.",
+            "Improper thawing where potentially hazardous foods are above 50 degrees F. and are beginning to approximate room temperature.",
+            "Improper cooling where potentially hazardous foods are below 125 degrees F. and are beginning to approximate room temperature.",
+            "Handling or processing food in an area where there is surfacing sewage.",
+          ],
+          icon: String.fromCharCode(0xf256),
+          selected: false, minor: isMinor };
+      case 'FS':
+        // "Unapproved Food Source / Contaminated/Adulterated Food"
+        return {
+          code: "fs",
+          description: "Unapproved Food Source, Contaminated/Adulterated Food",
+          icon: String.fromCharCode(0xf49e),
+          examples: [
+            "Food offered for sale that was prepared in a private home, or other unapproved locations.",
+            "Meat offered for sale that was slaughtered or prepared in an unapproved location.",
+            "Food items that show obvious signs of spoilage or that are adulterated with foreign material that may pose a safety or heath threat to consumers.",
+          ],
+          selected: false, minor: isMinor };
+      case 'FT':
+        // "Improper Food Holding / Processing Temperatures"
+        return {
+          code: "ft",
+          description: "Improper Food Holding/Processing Temperatures",
+          icon: String.fromCharCode(0xf2cb),
+          examples: [
+            "Potentially hazardous foods held at temperatures greater than 50 degrees F. and less than 125 degrees F.",
+            "Failure to meet the minimum required cooking temperatures for specific foods such as port, poultry, eggs, and comminuted meat products.",
+          ],
+          selected: false, minor: isMinor };
+      case 'HW':
+        // "Inadequate Hand Washing Procedure"
+        return {
+          code: "hw",
+          description: "Inadequate Hand Washing Procedure",
+          icon: String.fromCharCode(0xf461),
+          examples: [
+            "Failure to wash hands or wear gloves as required.",
+            "Failure to maintain handwashing facilities functional and accessible at all times for use by food employees.",
+            "Failure to provide warm water (100 degrees F. minimum) for employee hand washing.",
+          ],
+          selected: false, minor: isMinor };
+      case 'VI':
+        // "Vermin Infestation (rodent or insect)"
+        return {
+          code: "vi",
+          description: "Vermin Infestation (rodent or insect)",
+          icon: String.fromCharCode(0xf188),
+          examples: [
+            "Active signs of a heavy rodent or insect infestation or food contaminated by rodents or insects.",
+          ],
+          selected: false, minor: isMinor };
+      case 'WS':
+        // "Inadequate Utensil / Equipment Washing or Sanitizing"
+        return {
+          code: "ws",
+          description: "Inadequate Utensil/Equipment Washing or Sanitizing",
+          icon: String.fromCharCode(0xf2e7),
+          examples: [
+            "Failure to adequately wash and sanitize utensils or equipment by inattention to prescribed chemical or temperature requirements.",
+            "No hot water supply for the facility.",
+            "Water supply for the facility is not potable.",
+          ],
+          selected: false, minor: isMinor };
+      default:
+        return null;
+    }
+  }
+
   getInspections(): void {
     this.inspectionService.getInspections(this.facility._id)
       .subscribe(inspections => {
@@ -109,105 +200,19 @@ export class FacilityDetailComponent implements OnInit {
 
         if(this.itemList.length > 0) {
           for (let v of this.itemList[0].violationsMajor.split(' ')) {
-            switch(v) {
-              case '0': break;
-              case 'EH':
-                // "Employee Hygiene & Training"
-                this.violations.push({
-                  code: "eh",
-                  description: "Employee Hygiene & Training",
-                  icon: String.fromCharCode(0xf007),
-                  examples: [
-                    "Employee(s) working around food with open cuts or sores, or while ill with a communicable disease that can cause a food borne illness; or while suffering from symptoms associated with acute gastrointestinal illness.",
-                    "Failure to restrict the duties of or exclude any employee from a food facility when notified that the employee has a communicable illness that is transmissible through food.",
-                    "Lack of adequate food safety knowledge, as related to the food employee's assigned duties. Failure of a permit-holder to obtain or maintain a valid food safety training certificate for the facility within 60 days of notification.",
-                   ],
-                  selected: false, major: true });
-                break;
-              case 'FP':
-                // "Improper Food Preparation / Handling Procedures"
-                this.violations.push({ code: "fp", description: "Improper Food Preparation/Handling Procedures", icon: String.fromCharCode(0xf256), selected: false, major: true });
-                break;
-              case 'FS':
-                // "Unapproved Food Source / Contaminated/Adulterated Food"
-                this.violations.push({ code: "fs", description: "Unapproved Food Source, Contaminated/Adulterated Food", icon: String.fromCharCode(0xf49e), selected: false, major: true });
-                break;
-              case 'FT':
-                // "Improper Food Holding / Processing Temperatures"
-                this.violations.push({ code: "ft", description: "Improper Food Holding/Processing Temperatures", icon: String.fromCharCode(0xf2cb), selected: false, major: true });
-                break;
-              case 'HW':
-                // "Inadequate Hand Washing Procedure"
-                this.violations.push({ code: "hw", description: "Inadequate Hand Washing Procedure", icon: String.fromCharCode(0xf461), selected: false, major: true });
-                break;
-              case 'VI':
-                // "Vermin Infestation (rodent or insect)"
-                this.violations.push({
-                  code: "vi",
-                  description: "Vermin Infestation (rodent or insect)",
-                  icon: String.fromCharCode(0xf188),
-                  examples: [ "Active signs of a heavy rodent or insect infestation or food contaminated by rodents or insects.", ],
-                  selected: false,
-                  major: true,
-                });
-                break;
-              case 'WS':
-                // "Inadequate Utensil / Equipment Washing or Sanitizing"
-                this.violations.push({ code: "ws", description: "Inadequate Utensil/Equipment Washing or Sanitizing", icon: String.fromCharCode(0xf2e7), selected: false, major: true });
-                break;
-              default:
-                break;
+            let parsed = this.getViolationFromCode(v, false);
+            if (parsed) {
+              this.violations.push(parsed);
             }
           }
-        }
 
-        if(this.itemList.length > 0) {
           for (let v of this.itemList[0].violationsMinor.split(' ')) {
-            switch(v) {
-              case '0': break;
-              case 'EH':
-                // "Employee Hygiene & Training"
-                this.violations.push({ code: "eh", description: "Employee Hygiene & Training", icon: String.fromCharCode(0xf007),
-                examples: [
-                  "Employee(s) working around food with open cuts or sores, or while ill with a communicable disease that can cause a food borne illness; or while suffering from symptoms associated with acute gastrointestinal illness.",
-                  "Failure to restrict the duties of or exclude any employee from a food facility when notified that the employee has a communicable illness that is transmissible through food.",
-                  "Lack of adequate food safety knowledge, as related to the food employee's assigned duties. Failure of a permit-holder to obtain or maintain a valid food safety training certificate for the facility within 60 days of notification.",
-                 ],
-                selected: false, minor: true });
-                break;
-              case 'FP':
-                // "Improper Food Preparation / Handling Procedures"
-                this.violations.push({ code: "fp", description: "Improper Food Preparation/Handling Procedures", icon: String.fromCharCode(0xf256), selected: false, minor: true });
-                break;
-              case 'FS':
-                // "Unapproved Food Source / Contaminated/Adulterated Food"
-                this.violations.push({ code: "fs", description: "Unapproved Food Source, Contaminated/Adulterated Food", icon: String.fromCharCode(0xf49e), selected: false, minor: true });
-                break;
-              case 'FT':
-                // "Improper Food Holding / Processing Temperatures"
-                this.violations.push({ code: "ft", description: "Improper Food Holding/Processing Temperatures", icon: String.fromCharCode(0xf2cb), selected: false, minor: true });
-                break;
-              case 'HW':
-                // "Inadequate Hand Washing Procedure"
-                this.violations.push({ code: "hw", description: "Inadequate Hand Washing Procedure", icon: String.fromCharCode(0xf461), selected: false, minor: true });
-                break;
-              case 'VI':
-                // "Vermin Infestation (rodent or insect)"
-                this.violations.push({ code: "vi", description: "Vermin Infestation (rodent or insect)", icon: String.fromCharCode(0xf188),
-                examples: [ "Active signs of a heavy rodent or insect infestation or food contaminated by rodents or insects.", ],
-                selected: false, minor: true });
-                break;
-              case 'WS':
-                // "Inadequate Utensil / Equipment Washing or Sanitizing"
-                this.violations.push({ code: "ws", description: "Inadequate Utensil/Equipment Washing or Sanitizing", icon: String.fromCharCode(0xf2e7), selected: false, minor: true });
-                break;
-              default:
-                break;
+            let parsed = this.getViolationFromCode(v, true);
+            if (parsed) {
+              this.violations.push(parsed);
             }
           }
         }
-
-
       });
   }
 

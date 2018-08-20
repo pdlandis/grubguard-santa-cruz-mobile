@@ -39,7 +39,7 @@
         class="fa detail-icon"
         (tap)="onIconTap(v)"
         [class.selected]="v.selected"
-        [class.detail-icon-major]="v.major"
+        [class.detail-icon-major]="!v.minor"
         [class.detail-icon-minor]="v.minor"
         >
       </Label>
