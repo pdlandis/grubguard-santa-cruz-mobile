@@ -1,9 +1,10 @@
 <ActionBar class="action-bar">
     <Label class="action-bar-title" text="Location details"></Label>
 </ActionBar>
-<ScrollView>
-<StackLayout *ngIf="!isLoading; else stillLoading" class="facility-detail">
-  <Label [text]="facility.name" class="name"></Label>
+<ScrollView *ngIf="!isLoading; else stillLoading">
+<StackLayout class="facility-detail">
+
+  <Label [text]="facility.name" class="name" [marginTop]="getScrollViewMargin()"></Label>
   <Label [text]="facility.address" class="address"></Label>
 
   <AnimatedCircle *ngIf="!isLoading"
@@ -61,10 +62,10 @@
     <Label *ngIf="!hasMinorViolations(item)" text="No minor violations this inspection." style="color: green;"></Label>
     <Label *ngFor="let v of parseMinorViolations(item)" [text]="v" style="color: #F1C40F;"></Label>
 
-    <GridLayout rows="*", columns="auto,auto">
-      <Label text="Other violations: " row="0" col="0" style="color: #7F8C8D;"></Label>
-      <Label [text]="item.violationsGeneral" row="0" col="1" style="color: #7F8C8D;"></Label>
-    </GridLayout>
+    <Label>
+      <Span text="Other violations: " style="color: #7F8C8D;"></Span>
+      <Span [text]="item.violationsGeneral" style="color: #7F8C8D;"></Span>
+    </Label>
   </StackLayout>
 
 </StackLayout>

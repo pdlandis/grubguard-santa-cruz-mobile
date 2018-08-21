@@ -306,6 +306,11 @@ export class FacilityDetailComponent implements OnInit {
     return isAndroid ? "16" : "60";
   }
 
+  // Fix for ScrollView hiding top elements on iOS.
+  getScrollViewMargin(): string {
+    return isAndroid ? "" : "80";
+  }
+
   private onIconTap(v): void {
     for (let violation of this.violations) {
       violation.selected = false;
