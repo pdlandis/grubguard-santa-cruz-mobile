@@ -1,5 +1,5 @@
 <StackLayout>
-  <SearchBar hint="Search for a restaurant" (submit)="onSubmit($event)"></SearchBar>
+  <SearchBar hint="Search for a restaurant" (loaded)="onSearchBarLoad($event)" (submit)="onSubmit($event)"></SearchBar>
   <ListView [items]="itemList" height=100%>
     <ng-template let-item="item">
       <GridLayout rows="*,*" columns="*,auto" [class]="getStyleClass(item)" (tap)="onItemTap(item)">
