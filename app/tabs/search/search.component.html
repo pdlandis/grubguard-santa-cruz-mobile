@@ -1,6 +1,7 @@
 <StackLayout>
   <SearchBar hint="Search for a restaurant" (loaded)="onSearchBarLoad($event)" (submit)="onSubmit($event)"></SearchBar>
-  <ListView [items]="itemList" height=100%>
+
+  <ListView *ngIf="!isSearching; else stillSearching" [items]="itemList" height=100%>
     <ng-template let-item="item">
       <GridLayout rows="*,*" columns="*,auto" [class]="getStyleClass(item)" (tap)="onItemTap(item)">
         <Label [text]="item.name" row="0" class="list-item-title title-good"></Label>
@@ -8,4 +9,10 @@
       </GridLayout>
     </ng-template>
   </ListView>
+
+  <ng-template #stillSearching>
+    <FlexboxLayout width="100%" height="100%">
+      <ActivityIndicator alignSelf="center" width="100%" [busy]="isSearching"></ActivityIndicator>
+    </FlexboxLayout>
+  </ng-template>
 </StackLayout>

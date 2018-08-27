@@ -14,6 +14,7 @@ import { FacilityService } from "../../_services/facility.service";
 export class SearchComponent implements OnInit {
 
   private itemList: Array<Facility>;
+  private isSearching: boolean;
 
   // Expose imported functions to template
   private getStyleClass = getStyleClass;
@@ -21,7 +22,9 @@ export class SearchComponent implements OnInit {
   constructor(
     private facilityService: FacilityService,
     private routerExtensions: RouterExtensions,
-  ) { }
+  ) {
+    this.isSearching = false;
+  }
 
   ngOnInit(): void {
   }
@@ -34,6 +37,7 @@ export class SearchComponent implements OnInit {
   }
 
   public onSubmit(args) {
+    this.isSearching = true;
     let searchBar = <SearchBar>args.object;
     this.sendSearch(searchBar.text);
   }
@@ -42,6 +46,7 @@ export class SearchComponent implements OnInit {
     this.facilityService.getFacilitiesByName(query)
       .subscribe(results => {
         this.itemList = results;
+        this.isSearching = false;
       });
   }
 
