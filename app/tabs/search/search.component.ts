@@ -4,7 +4,7 @@ import { SearchBar } from "ui/search-bar";
 import { isAndroid } from "platform";
 
 import { Facility, getStyleClass } from "../../_objects/facility";
-import { FacilityService } from "../../_services/facility.service";
+import { FacilityService, FacilityServiceCodes } from "../../_services/facility.service";
 
 @Component({
     selector: "Search",
@@ -14,7 +14,9 @@ import { FacilityService } from "../../_services/facility.service";
 export class SearchComponent implements OnInit {
 
   private itemList: Array<Facility>;
+  private hasSearched: boolean;
   private isSearching: boolean;
+  private query: string;
 
   // Expose imported functions to template
   private getStyleClass = getStyleClass;
@@ -23,6 +25,7 @@ export class SearchComponent implements OnInit {
     private facilityService: FacilityService,
     private routerExtensions: RouterExtensions,
   ) {
+    this.hasSearched = false;
     this.isSearching = false;
   }
 
@@ -37,17 +40,33 @@ export class SearchComponent implements OnInit {
   }
 
   public onSubmit(args) {
-    this.isSearching = true;
-    let searchBar = <SearchBar>args.object;
-    this.sendSearch(searchBar.text);
+    if (!this.isSearching) {
+      this.isSearching = true;
+      let searchBar = <SearchBar>args.object;
+      this.query = searchBar.text;
+      this.sendSearch(this.query);
+    }
   }
 
   sendSearch(query): void {
+    this.hasSearched = true;
     this.facilityService.getFacilitiesByName(query)
-      .subscribe(results => {
-        this.itemList = results;
-        this.isSearching = false;
-      });
+      .subscribe(
+        results => {
+          this.itemList = results;
+          this.isSearching = false;
+        },
+        err => {
+          if (err === FacilityServiceCodes.NetworkError) {
+            this.itemList = null;
+            this.isSearching = false;
+            alert("A network error occured.\nPlease check your internet connection.");
+          }
+          else {
+            alert("An unknown error occured while searching.");
+          }
+        }
+      );
   }
 
   onItemTap(item): void {

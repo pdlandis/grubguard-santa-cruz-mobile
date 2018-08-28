@@ -92,6 +92,12 @@ Label.refresh-label {
   margin-right: 2;
 }
 
+Label.search-message {
+  color: $disabled;
+  text-align: center;
+  width: 100%;
+}
+
 .action-bar {
   background-color: #7F8C8D;
 }

@@ -1,18 +1,29 @@
 <StackLayout>
   <SearchBar hint="Search for a restaurant" (loaded)="onSearchBarLoad($event)" (submit)="onSubmit($event)"></SearchBar>
 
-  <ListView *ngIf="!isSearching; else stillSearching" [items]="itemList" height=100%>
-    <ng-template let-item="item">
-      <GridLayout rows="*,*" columns="*,auto" [class]="getStyleClass(item)" (tap)="onItemTap(item)">
-        <Label [text]="item.name" row="0" class="list-item-title title-good"></Label>
-        <Label [text]="item.address" row="1" col="0" class="list-item-address"></Label>
-      </GridLayout>
+  <ng-container *ngIf="isSearching; then stillSearching; else finishedSearching"></ng-container>
+
+  <ng-template #finishedSearching>
+    <ListView *ngIf="itemList && itemList.length; else noResults" [items]="itemList" height=100%>
+      <ng-template let-item="item">
+        <GridLayout rows="*,*" columns="*,auto" [class]="getStyleClass(item)" (tap)="onItemTap(item)">
+          <Label [text]="item.name" row="0" class="list-item-title title-good"></Label>
+          <Label [text]="item.address" row="1" col="0" class="list-item-address"></Label>
+        </GridLayout>
+      </ng-template>
+    </ListView>
+
+    <ng-template #noResults>
+      <FlexboxLayout *ngIf="hasSearched" width="100%" height="100%">
+        <Label alignSelf="center" class="search-message" text="0 results found for '{{ query }}'" textWrap="true"></Label>
+      </FlexboxLayout>
     </ng-template>
-  </ListView>
+  </ng-template>
 
   <ng-template #stillSearching>
     <FlexboxLayout width="100%" height="100%">
       <ActivityIndicator alignSelf="center" width="100%" [busy]="isSearching"></ActivityIndicator>
     </FlexboxLayout>
   </ng-template>
+
 </StackLayout>
