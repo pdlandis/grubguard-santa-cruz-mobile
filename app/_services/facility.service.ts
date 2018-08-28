@@ -3,12 +3,17 @@ import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { _throw } from 'rxjs/observable/throw';
 
 import { Facility } from '../_objects/facility';
 import { Settings } from '../_config/settings';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+};
+
+export const FacilityServiceCodes = {
+  NetworkError: 0,
 };
 
 @Injectable()
@@ -114,7 +119,9 @@ export class FacilityService {
 
     return this.http.post<Facility[]>(`${this.apiUrl}/search`, data, httpOptions).pipe(
       tap((facilities: Facility[]) => { this.cacheAdd(facilities); }),
-      catchError(this.handleError<Facility[]>('getFacilitiesByName', [])),
+      catchError((err: any, result: Observable<Facility[]>): Observable<Facility[]> => {
+          return _throw(FacilityServiceCodes.NetworkError);
+        }),
     );
   }
 
