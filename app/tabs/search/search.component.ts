@@ -44,6 +44,7 @@ export class SearchComponent implements OnInit {
       this.isSearching = true;
       let searchBar = <SearchBar>args.object;
       this.query = searchBar.text;
+      searchBar.dismissSoftInput();
       this.sendSearch(this.query);
     }
   }
