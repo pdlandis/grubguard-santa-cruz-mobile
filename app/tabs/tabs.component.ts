@@ -1,6 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { isAndroid } from "platform";
+import { Page } from "ui/page";
+import { SearchBar } from "ui/search-bar";
+
 import { SelectedIndexChangedEventData, TabView, TabViewItem } from "tns-core-modules/ui/tab-view";
+import { isAndroid } from "platform";
 
 @Component({
     selector: "TabsComponent",
@@ -11,7 +14,9 @@ import { SelectedIndexChangedEventData, TabView, TabViewItem } from "tns-core-mo
 export class TabsComponent implements OnInit {
     private _title: string;
 
-    constructor() {
+    constructor(
+      private page: Page
+    ) {
         // Use the component constructor to inject providers.
     }
 
@@ -38,5 +43,9 @@ export class TabsComponent implements OnInit {
         const selectedTabViewItem = tabView.items[args.newIndex];
 
         this.title = selectedTabViewItem.title;
+
+        // Dismiss the Search keyboard whenever we change tabs
+        let sb = <SearchBar>this.page.getViewById('sb');
+        sb.dismissSoftInput();
     }
 }

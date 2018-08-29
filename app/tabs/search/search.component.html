@@ -1,5 +1,5 @@
 <StackLayout>
-  <SearchBar hint="Search for a restaurant" (loaded)="onSearchBarLoad($event)" (submit)="onSubmit($event)"></SearchBar>
+  <SearchBar #sb id="sb" hint="Search for a restaurant" (loaded)="onSearchBarLoad($event)" (submit)="onSubmit($event)"></SearchBar>
 
   <ng-container *ngIf="isSearching; then stillSearching; else finishedSearching"></ng-container>
 
