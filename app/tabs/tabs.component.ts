@@ -5,6 +5,10 @@ import { SearchBar } from "ui/search-bar";
 import { SelectedIndexChangedEventData, TabView, TabViewItem } from "tns-core-modules/ui/tab-view";
 import { isAndroid } from "platform";
 
+import utils = require("utils/utils")
+
+declare var android;
+
 @Component({
     selector: "TabsComponent",
     moduleId: module.id,
@@ -39,13 +43,28 @@ export class TabsComponent implements OnInit {
     }
 
     onSelectedIndexChanged(args: SelectedIndexChangedEventData) {
+        if (this.title === 'Search') {
+          // Dismiss the keyboard if we're navigating from Search
+          let sb = <SearchBar>this.page.getViewById('sb');
+          sb.dismissSoftInput();
+        }
         const tabView = <TabView>args.object;
         const selectedTabViewItem = tabView.items[args.newIndex];
-
         this.title = selectedTabViewItem.title;
 
-        // Dismiss the Search keyboard whenever we change tabs
-        let sb = <SearchBar>this.page.getViewById('sb');
-        sb.dismissSoftInput();
+        if (selectedTabViewItem.title === 'Search') {
+          // Focus the search bar if we're navigating to Search
+          let sb = <SearchBar>this.page.getViewById('sb');
+          sb.focus();
+
+          // Patch for an android issue where focusing the input doesn't bring up the keyboard.
+          // https://github.com/NativeScript/NativeScript/issues/1973#issuecomment-230395339
+          if (isAndroid) {
+            let imm = utils.ad.getInputMethodManager();
+            if (imm) {
+              imm.toggleSoftInput(android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT, 0);
+            }
+          }
+        }
     }
 }
