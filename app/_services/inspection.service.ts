@@ -28,9 +28,7 @@ export class InspectionService {
    */
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      // Errors here should really be sent to remote logging.
-      console.error(error);
-      this.log(`${operation} failed: ${error.message}`);
+      // this.log(`${operation} failed: ${error.message}`);
       return of(result as T); // Let app keep running by returning empty observable
     }
   }
@@ -41,7 +39,9 @@ export class InspectionService {
    * @param message   The string to write.
    */
   private log(message: string) {
-    console.log('InspectionService: ' + message);
+    // TODO: Make this write to remote logging
+    // console.log('InspectionService: ' + message);
+    return;
   }
 
   /**
@@ -50,7 +50,6 @@ export class InspectionService {
    * @returns             Observable of Inspection results.
    */
   getInspections(facilityId): Observable<Inspection[]> {
-    this.log(`fetching inspections for facility: ${facilityId}`);
     const url = `${this.apiUrl}/${facilityId}`;
 
     return this.http.get<Inspection[]>(url)

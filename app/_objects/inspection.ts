@@ -20,7 +20,6 @@ export class Inspection {
 
   // The Inspection service is currently stripping these functions out, so they become undefined.
   // public hasMajorViolations(): boolean {
-  //   console.log("has major violations ()");
   //   if (this.violationsMajor === '0') {
   //     return false;
   //   }

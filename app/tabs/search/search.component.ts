@@ -71,7 +71,6 @@ export class SearchComponent implements OnInit {
   }
 
   onItemTap(item): void {
-    console.log(item);
     this.routerExtensions.navigate(["/tabs/detail/", item._id],
         // {
         //     animated: false,

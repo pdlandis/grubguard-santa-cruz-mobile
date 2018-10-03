@@ -38,9 +38,7 @@ export class FacilityService {
    */
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      // Errors here should really be sent to remote logging.
-      console.error(error);
-      this.log(`${operation} failed: ${error.message}`);
+      // this.log(`${operation} failed: ${error.message}`);
       return of(result as T); // Let app keep running by returning empty observable
     }
   }
@@ -72,7 +70,9 @@ export class FacilityService {
    * @param message   The string to write.
    */
   private log(message: string) {
-    console.log('FacilityService: ' + message);
+    // TODO: Make this write to remote logging
+    // console.log('FacilityService: ' + message);
+    return;
   }
 
   /**
@@ -80,8 +80,6 @@ export class FacilityService {
    * @returns Observable of Facility results.
    */
   getFacilities(): Observable<Facility[]> {
-    this.log('fetching facilities');
-
     return this.http.get<Facility[]>(this.apiUrl)
       .pipe(
         catchError(this.handleError('getFacilities', [])),
@@ -94,8 +92,6 @@ export class FacilityService {
    * @returns Observable of Facility result.
    */
   getFacility(id: string): Observable<Facility> {
-    this.log(`fetching facility with id: ${id}`);
-
     if (this.cacheHas(id)) {
       return this.cacheGet(id);
     }
@@ -113,8 +109,6 @@ export class FacilityService {
  * @returns Observable of Facility result.
  */
   getFacilitiesByName(name: string): Observable<Facility[]> {
-    this.log(`fetching facility with name: ${name}`);
-
     let data = { name: name, };
 
     return this.http.post<Facility[]>(`${this.apiUrl}/search`, data, httpOptions).pipe(
@@ -131,9 +125,6 @@ export class FacilityService {
    * @returns         Observable array of Facility results.
    */
   getNearbyFacilities(location: any): Observable<Facility[]> {
-    //this.log(`fetching facilities near: ${location}`);
-    this.log(this.apiUrl);
-
     return this.http.post<Facility[]>(`${this.apiUrl}/nearby`, location, httpOptions).pipe(
       tap((facilities: Facility[]) => { this.cacheAdd(facilities); }),
       catchError(this.handleError<Facility[]>('getNearbyFacilities', [])),
