@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { Page } from "ui/page";
 import { SearchBar } from "ui/search-bar";
-
 import { SelectedIndexChangedEventData, TabView, TabViewItem } from "tns-core-modules/ui/tab-view";
 import { isAndroid } from "platform";
+import { getOrientation } from "nativescript-orientation";
 
 import utils = require("utils/utils")
 
@@ -52,8 +52,10 @@ export class TabsComponent implements OnInit {
         const selectedTabViewItem = tabView.items[args.newIndex];
         this.title = selectedTabViewItem.title;
 
-        if (selectedTabViewItem.title === 'Search') {
-          // Focus the search bar if we're navigating to Search
+        let currentOrientation = getOrientation();
+        if (currentOrientation === 'portrait' && selectedTabViewItem.title === 'Search') {
+          // Focus the search bar if we're navigating to Search while in portrait mode
+          // (forcing the keyboard to appear in landscape breaks navigation flow)
           let sb = <SearchBar>this.page.getViewById('sb');
           sb.focus();
 
