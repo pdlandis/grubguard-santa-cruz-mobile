@@ -10,7 +10,6 @@ dependencies {
 android {
   defaultConfig {
     generatedDensities = []
-    applicationId = "org.nativescript.gutcheck"
   }
   aaptOptions {
     additionalParameters "--no-version-vectors"
