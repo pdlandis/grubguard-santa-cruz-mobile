@@ -24,6 +24,14 @@ ActionBar .action-bar-title {
     horizontal-align: center;
 }
 
+.action-bar {
+  // background-color: #7F8C8D;
+  // background-color: #A5EFDD;
+  background-color: #3FB8C1;
+  font-size: 18;
+  font-weight: bold;
+}
+
 .list-item {
   margin: 10;
   padding-left: 5;
@@ -98,9 +106,7 @@ Label.search-message {
   width: 100%;
 }
 
-.action-bar {
-  background-color: #7F8C8D;
-}
+
 
 .detail-icon {
   text-align: center;

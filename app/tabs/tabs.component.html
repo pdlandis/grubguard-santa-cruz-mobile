@@ -1,14 +1,12 @@
 <ActionBar class="action-bar">
-    <Label class="action-bar-title" [text]="title"></Label>
+  <Label text="GrubGuard Santa Cruz"></Label>
 </ActionBar>
 
-<!--
-The TabView component provides a simple way to navigate between different views by
-tapping on some of the tabs or by swiping between the views.
-Learn more about the TabView component in this documentation article:
-http://docs.nativescript.org/angular/code-samples/ui/tab-view
--->
-<TabView (selectedIndexChanged)="onSelectedIndexChanged($event)">
+<!-- I don't know why this combination of property and inline style works
+      for androidSelectedTabHighlightColor, but other attempts failed. -->
+<TabView (selectedIndexChanged)="onSelectedIndexChanged($event)"
+  androidSelectedTabHighlightColor="#FFFFFF"
+  style="android-selected-tab-highlight-color: #3FB8C1;">
   <StackLayout *tabItem="{title: 'Nearby', iconSource: getIconSource('near_me')}">
     <Browse></Browse>
   </StackLayout>
