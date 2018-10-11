@@ -34,7 +34,7 @@ export class FacilityDetailComponent implements OnInit {
 
   private facility: Facility;
   private itemList: Inspection[];
-  private isLoading: boolean;
+  public isLoading: boolean;
 
   private progressScore: number;
   private progressColor: String;

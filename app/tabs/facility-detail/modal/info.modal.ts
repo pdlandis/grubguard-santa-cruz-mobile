@@ -7,7 +7,7 @@ import { ModalDialogParams } from "nativescript-angular/directives/dialogs";
 })
 export class ModalComponent {
 
-  private violation: any;
+  public violation: any;
 
   public constructor(private params: ModalDialogParams) {
     this.violation = params.context.violation;

@@ -36,8 +36,8 @@ class ListItem {
 })
 export class BrowseComponent implements OnInit {
 
-  private isLoading: boolean;
-  private hasPermission: boolean;
+  public isLoading: boolean;
+  public hasPermission: boolean;
 
   private itemList: Array<ListItem>;
   private location: any;

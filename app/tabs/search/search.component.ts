@@ -15,7 +15,7 @@ export class SearchComponent implements OnInit {
 
   private itemList: Array<Facility>;
   private hasSearched: boolean;
-  private isSearching: boolean;
+  public isSearching: boolean;
   private query: string;
 
   // Expose imported functions to template
@@ -32,7 +32,7 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  private onSearchBarLoad(args) {
+  public onSearchBarLoad(args) {
     if (isAndroid) {
       let searchBar = <SearchBar>args.object;
       searchBar.android.clearFocus();
