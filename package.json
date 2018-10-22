@@ -2,11 +2,11 @@
   "description": "GrubGuard Santa Cruz",
   "nativescript": {
     "id": "net.patricklandis.grubguardsantacruz",
-    "tns-ios": {
-      "version": "4.0.1"
-    },
     "tns-android": {
       "version": "4.1.3"
+    },
+    "tns-ios": {
+      "version": "4.2.0"
     }
   },
   "scripts": {
