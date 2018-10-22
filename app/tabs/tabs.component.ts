@@ -2,12 +2,13 @@ import { Component, OnInit } from "@angular/core";
 import { Page } from "ui/page";
 import { SearchBar } from "ui/search-bar";
 import { SelectedIndexChangedEventData, TabView, TabViewItem } from "tns-core-modules/ui/tab-view";
-import { isAndroid } from "platform";
+import { isAndroid, isIOS } from "platform";
 import { getOrientation } from "nativescript-orientation";
 
 import utils = require("utils/utils")
 
 declare var android;
+declare const IQKeyboardManager;
 
 @Component({
     selector: "TabsComponent",
@@ -17,11 +18,15 @@ declare var android;
 })
 export class TabsComponent implements OnInit {
     private _title: string;
+    private iqKeyboard: IQKeyboardManager;
 
     constructor(
       private page: Page
     ) {
-        // Use the component constructor to inject providers.
+      if (isIOS) {
+        this.iqKeyboard = IQKeyboardManager.sharedManager();
+        this.iqKeyboard.shouldResignOnTouchOutside = true;
+      }
     }
 
     ngOnInit(): void {
