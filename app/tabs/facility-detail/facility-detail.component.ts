@@ -150,7 +150,7 @@ export class FacilityDetailComponent implements OnInit {
           icon: String.fromCharCode(0xf2cb),
           examples: [
             "Potentially hazardous foods held at temperatures greater than 50 degrees F. and less than 125 degrees F.",
-            "Failure to meet the minimum required cooking temperatures for specific foods such as port, poultry, eggs, and comminuted meat products.",
+            "Failure to meet the minimum required cooking temperatures for specific foods such as pork, poultry, eggs, and comminuted (ground) meat products.",
           ],
           selected: false, minor: isMinor };
       case 'HW':
