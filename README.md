@@ -1,5 +1,5 @@
 # GrubGuard Santa Cruz
-![GrubGuard logo](app/App_Resources/iOS/Assets.xcassets/LaunchScreen.Center.imageset/LaunchScreen-Center.png)
+<img src="app/App_Resources/iOS/Assets.xcassets/LaunchScreen.Center.imageset/LaunchScreen-Center.png" width="300"/>
 
 GrubGuard was an application for iOS and Android that displayed information
 about food safety inspections for restaurants and facilities in the
@@ -13,6 +13,8 @@ It was previously available on Google Play and the Apple App Store.
 
 This is the mobile application frontend.
 Server code can be found in [this repo.](https://github.com/pdlandis/grubguard-santa-cruz-server)
+
+<img src="docs/grubguard_screenshot_nearby.png" width="300"/>
 
 ## Development Details
 The GrubGuard frontend (this repo) was written in TypeScript, HTML and CSS.
