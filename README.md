@@ -8,7 +8,6 @@ by distance from the user if they choose to share their location permissions
 with the app.
 
 It was previously available on Google Play and the Apple App Store.
-It has been de-listed as I no longer have the time to update 
 
 This is the mobile application frontend.
 Server code can be found in [this repo.](https://github.com/pdlandis/grubguard-santa-cruz-server)
