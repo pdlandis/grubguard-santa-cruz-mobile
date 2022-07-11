@@ -1,4 +1,6 @@
 # GrubGuard Santa Cruz
+![GrubGuard logo](app/App_Resources/iOS/Assets.xcassets/LaunchScreen.Center.imageset/LaunchScreen-Center.png)
+
 GrubGuard was an application for iOS and Android that displayed information
 about food safety inspections for restaurants and facilities in the
 county of Santa Cruz (California.)
